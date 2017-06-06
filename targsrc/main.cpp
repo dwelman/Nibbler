@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        srand(time(NULL));
+        //srand(time(NULL));
 
     }
 }
