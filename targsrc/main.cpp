@@ -3,11 +3,14 @@
 
 int main(int argc, char **argv)
 {
-    int     mapWidth;
-    int     mapHeight;
+    int         mapWidth;
+    int         mapHeight;
+    std::string startingLib;
+
     if (argc < 3 || argc > 4)
     {
         std::cout << "Usage: nibbler [map_width] [map_height] [optional: starting graphics library]" << std::endl;
+        exit (-1);
     }
     try
     {
@@ -38,6 +41,15 @@ int main(int argc, char **argv)
     else if (mapHeight > 50)
     {
         std::cout << "Map height too large" << std::endl;
-        exit (-1);
+        exit(-1);
+    }
+    if (argc == 4)
+    {
+        startingLib = argv[3];
+    }
+    else
+    {
+        srand(time(NULL));
+
     }
 }
