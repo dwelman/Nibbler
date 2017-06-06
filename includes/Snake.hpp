@@ -2,8 +2,6 @@
 
 #include <vector>
 
-
-
 class Snake
 {
 public:
