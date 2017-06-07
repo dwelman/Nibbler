@@ -1,17 +1,28 @@
 #pragma once
 
 #include <string>
+#include "Snake.hpp"
+#include "Food.hpp"
 
 class GameManager
 {
 public:
+	GameManager();
     ~GameManager();
 
-    GameManager &operator=(GameManager const &gm);
-
     static GameManager &Instance();
+	void			GiveSnake(Snake const &_snake);
+	void			Update();
+	Snake			*GetSnake();
 private:
-    GameManager();
     GameManager(GameManager const &gm);
-    static GameManager *instance;
+	GameManager &operator=(GameManager const &gm);
+
+	Snake				*snake;
+	int					mapWidth;
+	int					mapHeight;
+	int					foodCounter;
+	std::vector<Food*>	food;
+
+	void	spawnFood();
 };

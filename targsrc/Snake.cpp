@@ -1,13 +1,15 @@
 #include "Snake.hpp"
 
-Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir)
+Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir) : stomachSize(0), isDying(false)
 {
 	SnakeSegment newSegment(x, y);
 	newSegment.SetSegmentType(SnakeSegment::HEAD);
 	newSegment.SetSegmentDirection(dir);
 	snake.push_back(newSegment);
-	newSegment = SnakeSegment(x, y - 1);
+	newSegment = SnakeSegment(newSegment);
+	newSegment.SetSegmentType(SnakeSegment::BODY);
 	newSegment.SetSegmentDirection(dir);
+	newSegment.MoveBack();
 	snake.push_back(newSegment);
 	addPiece();
 	addPiece();
@@ -25,6 +27,8 @@ Snake::~Snake()
 Snake & Snake::operator=(Snake const & s)
 {
 	this->snake = s.snake;
+	this->isDying = s.isDying;
+	this->stomachSize = s.stomachSize;
 	return (*this);
 }
 
@@ -71,7 +75,39 @@ void Snake::addPiece()
 	SnakeSegment newSegment(snake.back());
 	newSegment.MoveBack();
 	snake.back().SetSegmentType(SnakeSegment::BODY);
+	newSegment.SetSegmentType(SnakeSegment::TAIL);
 	snake.push_back(newSegment);
+}
+
+void Snake::removePiece()
+{
+	if (snake.size() > 2)
+	{
+		snake.pop_back();
+		snake.back().SetSegmentType(SnakeSegment::TAIL);
+	}
+}
+
+void Snake::removePieceFromHead()
+{
+	if (snake.size() > 0)
+	{
+		snake.erase(snake.begin(), snake.begin() + 1);
+	}
+}
+
+void Snake::digestFood()
+{
+	if (stomachSize > 0)
+	{
+		addPiece();
+		stomachSize--;
+	}
+	else if (stomachSize < 0)
+	{
+		removePiece();
+		stomachSize++;
+	}
 }
 
 void Snake::PrintSnake()
@@ -84,6 +120,66 @@ void Snake::PrintSnake()
 
 void Snake::UpdateSnake()
 {
-    moveSnake();
-    updateSnakeSegments();
+	if (!isDying)
+	{
+		moveSnake();
+		updateSnakeSegments();
+		digestFood();
+	}
+	else
+	{
+		removePieceFromHead();
+	}
+}
+
+void Snake::Eat(int amount)
+{
+	stomachSize += amount;
+}
+
+void Snake::Die()
+{
+	isDying = true;
+}
+
+bool Snake::IsDead()
+{
+	if (snake.size() == 0)
+	{
+		return (true);
+	}
+	return (false);
+}
+
+bool Snake::CheckSelfCollision()
+{
+	SnakeSegment &head = snake[0];
+	for (auto iter = snake.begin() + 1; iter != snake.end(); iter++)
+	{
+		if (head == *iter)
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
+
+std::vector<int> Snake::getAllX()
+{
+	std::vector<int>	ret;
+	for (auto iter = snake.begin(); iter != snake.end(); iter++)
+	{
+		ret.push_back(iter->getX());
+	}
+	return (ret);
+}
+
+std::vector<int> Snake::getAllY()
+{
+	std::vector<int>	ret;
+	for (auto iter = snake.begin(); iter != snake.end(); iter++)
+	{
+		ret.push_back(iter->getY());
+	}
+	return (ret);
 }

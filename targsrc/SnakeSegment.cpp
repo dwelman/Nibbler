@@ -1,14 +1,6 @@
 #include "SnakeSegment.hpp"
 #include <iostream>
 
-SnakeSegment::SnakeSegment()
-{
-	x = 0;
-	y = 0;
-	type = BODY;
-	direction = NORTH;
-}
-
 SnakeSegment::~SnakeSegment()
 {
 }
@@ -27,24 +19,9 @@ SnakeSegment & SnakeSegment::operator=(SnakeSegment const & ss)
 	return (*this);
 }
 
-int SnakeSegment::GetX()
+bool SnakeSegment::operator==(SnakeSegment const & ss)
 {
-	return (x);
-}
-
-void SnakeSegment::SetX(int _x)
-{
-	x = _x;
-}
-
-int SnakeSegment::GetY()
-{
-	return (y);
-}
-
-void SnakeSegment::SetY(int _y)
-{
-	y = _y;
+	return ((this->x == ss.x) && (this->y && ss.y));
 }
 
 SnakeSegment::SnakeSegmentType SnakeSegment::GetSegmentType()
@@ -86,10 +63,8 @@ void SnakeSegment::Move()
     }
 }
 
-SnakeSegment::SnakeSegment(int _x, int _y)
+SnakeSegment::SnakeSegment(int _x, int _y) : Entity(_x, _y)
 {
-	x = _x;
-	y = _y;
 	type = BODY;
 	direction = NORTH;
 }

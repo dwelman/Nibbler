@@ -1,6 +1,8 @@
 #pragma once
 
-class SnakeSegment
+#include "Entity.hpp"
+
+class SnakeSegment : public Entity
 {
 public:
 	enum SegmentDirection
@@ -18,16 +20,12 @@ public:
 		TAIL
 	};
 
-	SnakeSegment();
     SnakeSegment(int x, int y);
 	~SnakeSegment();
 	SnakeSegment(SnakeSegment const &ss);
 
 	SnakeSegment		&operator=(SnakeSegment const &ss);
-	int					GetX();
-	void				SetX(int _x);
-	int					GetY();
-	void				SetY(int _y);
+	bool				operator==(SnakeSegment const &ss);
 	SnakeSegmentType	GetSegmentType();
 	void				SetSegmentType(SnakeSegmentType t);
 	SegmentDirection	GetSegmentDirection();
@@ -36,8 +34,8 @@ public:
     void                MoveBack();
     void                PrintInfo();
 private:
-	int				 x;
-	int				 y;
+	SnakeSegment();
+
     SnakeSegmentType type;
 	SegmentDirection direction;
 };
