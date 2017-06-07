@@ -1,4 +1,5 @@
 #include "SnakeSegment.hpp"
+#include <iostream>
 
 SnakeSegment::SnakeSegment()
 {
@@ -33,7 +34,7 @@ int SnakeSegment::GetX()
 
 void SnakeSegment::SetX(int _x)
 {
-	x = x;
+	x = _x;
 }
 
 int SnakeSegment::GetY()
@@ -68,12 +69,81 @@ void SnakeSegment::SetSegmentDirection(SegmentDirection d)
 
 void SnakeSegment::Move()
 {
-	if (direction == NORTH || direction == SOUTH)
+    if (direction == NORTH || direction == SOUTH)
+    {
+        y += direction;
+    }
+    else
+    {
+        if (direction == EAST)
+        {
+            x -= 1;
+        }
+        else
+        {
+            x += 1;
+        }
+    }
+}
+
+SnakeSegment::SnakeSegment(int _x, int _y)
+{
+	x = _x;
+	y = _y;
+	type = BODY;
+	direction = NORTH;
+}
+
+void SnakeSegment::MoveBack()
+{
+    if (direction == NORTH || direction == SOUTH)
+    {
+        y -= direction;
+    }
+    else
+    {
+        if (direction == EAST)
+        {
+            x += 1;
+        }
+        else
+        {
+            x -= 1;
+        }
+    }
+}
+
+void SnakeSegment::PrintInfo()
+{
+	std::cout << "X :" << x << " Y: " << y;
+    if (type == HEAD)
+    {
+        std::cout << " HEAD ";
+    }
+    else if (type == BODY)
+    {
+        std::cout << " BODY ";
+    }
+    else
+    {
+        std::cout << " TAIL ";
+    }
+
+	if (direction == NORTH)
 	{
-		y -= direction;
+        std::cout << " N ";
 	}
-	else
+	else if (direction == SOUTH)
 	{
-		x -= direction;
+        std::cout << " S ";
 	}
+	else if (direction == EAST)
+	{
+        std::cout << " E ";
+	}
+    else
+    {
+        std::cout << " W ";
+    }
+	std::cout << std::endl;
 }

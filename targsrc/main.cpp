@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "Snake.hpp"
 
 int main(int argc, char **argv)
 {
@@ -52,4 +53,13 @@ int main(int argc, char **argv)
         //srand(time(NULL));
 
     }
+    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH);
+    snake.PrintSnake();
+    snake.UpdateSnake();
+    snake.PrintSnake();
+    snake.ChangeSnakeHeadDirection(SnakeSegment::EAST);
+    snake.UpdateSnake();
+    snake.PrintSnake();
+    snake.UpdateSnake();
+    snake.PrintSnake();
 }

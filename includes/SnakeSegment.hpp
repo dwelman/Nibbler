@@ -7,8 +7,8 @@ public:
 	{
 		NORTH = 1,
 		SOUTH = -1,
-		EAST = -1,
-		WEST = 1
+		EAST = -2,
+		WEST = 2
 	};
 
 	enum SnakeSegmentType
@@ -19,6 +19,7 @@ public:
 	};
 
 	SnakeSegment();
+    SnakeSegment(int x, int y);
 	~SnakeSegment();
 	SnakeSegment(SnakeSegment const &ss);
 
@@ -32,6 +33,8 @@ public:
 	SegmentDirection	GetSegmentDirection();
 	void				SetSegmentDirection(SegmentDirection d);
 	void				Move();
+    void                MoveBack();
+    void                PrintInfo();
 private:
 	int				 x;
 	int				 y;
