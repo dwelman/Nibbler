@@ -26,6 +26,11 @@ Entity & Entity::operator=(Entity const & e)
 	return (*this);
 }
 
+bool Entity::operator==(Entity const & e)
+{
+	return ((this->x == e.x) && (this->y == e.y));
+}
+
 int Entity::getX()
 {
 	return (x);

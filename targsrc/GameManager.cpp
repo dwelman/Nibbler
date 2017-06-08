@@ -27,6 +27,12 @@ void GameManager::GiveSnake(Snake const & _snake)
 void GameManager::Update()
 {
 	snake->UpdateSnake();
+	checkFoodCollision();
+	checkWallCollision();
+	if (foodCounter == 0)
+	{
+		spawnFood();
+	}
 }
 
 Snake *GameManager::GetSnake()
@@ -47,6 +53,31 @@ void GameManager::spawnFood()
 	}
 	while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
 	//Change this later to a food factory
-	food.push_back(new Food(x, y, 1));
+	food.push_back(new Food(x, y, 1, 10));
 	foodCounter++;
+}
+
+void GameManager::checkFoodCollision()
+{
+	for (auto iter = food.begin(); iter != food.end(); iter++)
+	{
+		Entity *temp = *iter;
+
+		if (temp->getX() == snake->GetHead().getX() && temp->getY() == snake->GetHead().getY())
+		{
+			snake->Eat(**iter);
+			food.erase(iter);
+			--foodCounter;
+		}
+	}
+}
+
+void GameManager::checkWallCollision()
+{
+	int x = snake->GetHead().getX();
+	int y = snake->GetHead().getY();
+	if (x < 0 || y < 0 || x > mapWidth || y > mapHeight)
+	{
+		snake->Die();
+	}
 }

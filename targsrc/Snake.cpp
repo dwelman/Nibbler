@@ -1,6 +1,6 @@
 #include "Snake.hpp"
 
-Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir) : stomachSize(0), isDying(false)
+Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir) : stomachSize(0), isDying(false), score(0)
 {
 	SnakeSegment newSegment(x, y);
 	newSegment.SetSegmentType(SnakeSegment::HEAD);
@@ -29,6 +29,7 @@ Snake & Snake::operator=(Snake const & s)
 	this->snake = s.snake;
 	this->isDying = s.isDying;
 	this->stomachSize = s.stomachSize;
+	this->score = s.score;
 	return (*this);
 }
 
@@ -132,9 +133,10 @@ void Snake::UpdateSnake()
 	}
 }
 
-void Snake::Eat(int amount)
+void Snake::Eat(Food const &f)
 {
-	stomachSize += amount;
+	stomachSize += f.getVal();
+	score += f.getScore();
 }
 
 void Snake::Die()
@@ -164,7 +166,7 @@ bool Snake::CheckSelfCollision()
 	return (false);
 }
 
-std::vector<int> Snake::getAllX()
+std::vector<int> Snake::GetAllX()
 {
 	std::vector<int>	ret;
 	for (auto iter = snake.begin(); iter != snake.end(); iter++)
@@ -174,7 +176,7 @@ std::vector<int> Snake::getAllX()
 	return (ret);
 }
 
-std::vector<int> Snake::getAllY()
+std::vector<int> Snake::GetAllY()
 {
 	std::vector<int>	ret;
 	for (auto iter = snake.begin(); iter != snake.end(); iter++)
@@ -182,4 +184,19 @@ std::vector<int> Snake::getAllY()
 		ret.push_back(iter->getY());
 	}
 	return (ret);
+}
+
+SnakeSegment &Snake::GetHead()
+{
+	return (snake[0]);
+}
+
+int Snake::GetScore() const
+{
+	return (score);
+}
+
+void Snake::SetScore(int _score)
+{
+	score = _score;
 }

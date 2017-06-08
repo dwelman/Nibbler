@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "SnakeSegment.hpp"
+#include "Food.hpp"
 
 class Snake
 {
@@ -14,17 +15,21 @@ public:
     void				ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir);
     void				PrintSnake();
     void				UpdateSnake();
-	void				Eat(int amount);
+	void				Eat(Food const &f);
 	void				Die();
 	bool				IsDead();
 	bool				CheckSelfCollision();
 	std::vector<int>	GetAllX();
 	std::vector<int>	GetAllY();
+	SnakeSegment		&GetHead();
+	int					GetScore() const;
+	void				SetScore(int _score);
 private:
 	Snake();
 	std::vector<SnakeSegment>	snake;
 	int							stomachSize;
 	bool						isDying;
+	int							score;
 
 	void						updateSnakeSegments();
 	void						moveSnake();

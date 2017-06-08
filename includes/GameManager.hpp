@@ -24,5 +24,7 @@ private:
 	int					foodCounter;
 	std::vector<Food*>	food;
 
-	void	spawnFood();
+	void				spawnFood();
+	void				checkFoodCollision();
+	void				checkWallCollision();
 };
