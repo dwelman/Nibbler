@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(SpriteRender)
+project(BasicRender)
 
 set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra" )
 set(CMAKE_CXX_STANDARD 11)

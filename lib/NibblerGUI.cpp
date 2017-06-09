@@ -28,6 +28,22 @@ void	NibblerGUI::start()
 	}
 }
 
+NibblerGUI::NibblerGUI(const NibblerGUI &src)
+{
+	*this = src;
+}
+
+NibblerGUI 		&NibblerGUI::operator=(NibblerGUI const & src)
+{
+	_window = src._window;
+	_ren = src._ren;
+	_x = src._x;
+	_y =  src._y;
+	_blockSize = src._blockSize;
+	_blocks = src._blocks;
+	return (*this);
+}
+
 void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj)
 {
 	// Set render color to blue ( rect will be rendered in this color )
@@ -141,7 +157,7 @@ void			NibblerGUI::setSize(int x, int y)
 	for (int i = 0; i < _y; i++ )
 	{
 		r.y = i * _blockSize + 5;
-		for (int j = 0; j < _y; j++ )
+		for (int j = 0; j < _x; j++ )
 		{
 			r.x = j * _blockSize + 5;
 			_blocks.push_back(r);

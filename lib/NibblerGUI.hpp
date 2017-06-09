@@ -12,15 +12,14 @@
 #include <iostream>
 #include <queue>
 
-#define YRES 480
-#define XRES 680
+#define YRES 720
+#define XRES 1024
 
 class NibblerGUI : public IGUI
 {
 private:
 	SDL_Window					*_window;
 	SDL_Renderer				*_ren;
-	std::queue<int>				_events;
 	int 						_x, _y;
 	int 						_blockSize;
 	std::vector<SDL_Rect>		_blocks;
@@ -28,7 +27,9 @@ private:
 public:
 	NibblerGUI();
 	~NibblerGUI();
+	NibblerGUI(const NibblerGUI &src);
 
+	NibblerGUI 		&operator=(NibblerGUI const & src);
 	void			start();
 	void 			drawObjects(const std::vector<DrawableObj> &obj);
 	int				getInput(s_keypress &keys);
