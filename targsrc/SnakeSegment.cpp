@@ -21,7 +21,7 @@ SnakeSegment & SnakeSegment::operator=(SnakeSegment const & ss)
 
 bool SnakeSegment::operator==(SnakeSegment const & ss)
 {
-	return ((this->x == ss.x) && (this->y && ss.y));
+	return ((this->x == ss.x) && (this->y == ss.y));
 }
 
 SnakeSegment::SnakeSegmentType SnakeSegment::GetSegmentType()

@@ -123,7 +123,10 @@ void Snake::UpdateSnake()
 {
 	if (!isDying)
 	{
-        CheckSelfCollision();
+        if (CheckSelfCollision())
+        {
+            Die();
+        }
 		moveSnake();
 		updateSnakeSegments();
 		digestFood();
