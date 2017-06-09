@@ -68,6 +68,7 @@ void GameManager::checkFoodCollision()
         {
             if (temp->getX() == snake->GetHead().getX() && temp->getY() == snake->GetHead().getY()) {
                 snake->Eat(*food[i]);
+                toRemove.push_back(i);
             }
         }
 	}
