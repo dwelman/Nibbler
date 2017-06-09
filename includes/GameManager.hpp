@@ -16,6 +16,8 @@ public:
 	void			            Update();
 	Snake			            *GetSnake();
     std::vector<DrawableObj>    GetDrawableObjects();
+    void                        SetMapWidth(int width);
+    void                        SetMapHeight(int height);
 private:
     GameManager(GameManager const &gm);
 	GameManager &operator=(GameManager const &gm);

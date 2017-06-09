@@ -7,8 +7,8 @@ class SnakeSegment : public Entity
 public:
 	enum SegmentDirection
 	{
-		NORTH = 1,
-		SOUTH = -1,
+		NORTH = -1,
+		SOUTH = 1,
 		EAST = -2,
 		WEST = 2
 	};

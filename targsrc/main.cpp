@@ -1,4 +1,6 @@
 #include <nibbler.hpp>
+#include "GameManager.hpp"
+#include <unistd.h>
 
 void	*getHandle(const char *lib)
 {
@@ -35,6 +37,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	void							*handle;
 	std::vector<DrawableObj>		drawObj;
 
+
 	handle = getHandle(startingLib.c_str());
 	guiLib = loadLibObject(handle);
 	guiLib->start();
@@ -42,23 +45,39 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	DrawableObj temp;
 	temp.y = 0;
 	temp.x = 0;
-	drawObj.push_back(temp);
+	//drawObj.push_back(temp);
 	while (is_running)
 	{
+        drawObj = GameManager::Instance().GetDrawableObjects();
 		if (guiLib->getInput(keys) > 0)
 		{
 			std::cout << keys.p1north << " " << keys.p1south << " "
 					  << keys.p1west << " " << keys.p1east << std::endl;
-			drawObj[0].x -= keys.p1east;
-			drawObj[0].x += keys.p1west;
-			drawObj[0].y -= keys.p1north;
-			drawObj[0].y += keys.p1south;
+            if (keys.p1east > 0)
+            {
+                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::EAST);
+            }
+            else if (keys.p1north)
+            {
+                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::NORTH);
+            }
+            else if (keys.p1south)
+            {
+                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::SOUTH);
+            }
+            else if (keys.p1west)
+            {
+                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::WEST);
+            }
 		}
+        GameManager::Instance().Update();
 		guiLib->drawObjects(drawObj);
 
 		//DO something with keys
 		if (keys.quit > 0)
 			is_running = false;
+        //SDL_Delay(10);
+        usleep(100000);
 	}
 }
 
@@ -112,7 +131,11 @@ int main(int argc, char **argv)
     {
         srand(time(NULL));
     }
-
+    srand(time(NULL));
+    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH);
+    GameManager::Instance().GiveSnake(snake);
+    GameManager::Instance().SetMapHeight(mapHeight);
+    GameManager::Instance().SetMapWidth(mapWidth);
 	try
 	{
 		gameLoop(startingLib, mapWidth, mapHeight);
