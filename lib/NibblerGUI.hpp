@@ -10,10 +10,11 @@
 #include <exception>
 #include <string>
 #include <iostream>
-#include <queue>
+#include <map>
 
 #define YRES 720
 #define XRES 1024
+#define SDL_SetRenderDrawColorRGB(R, C) SDL_SetRenderDrawColor(R, C.r, C.g, C.b, C.a)
 
 class NibblerGUI : public IGUI
 {
@@ -23,6 +24,7 @@ private:
 	int 						_x, _y;
 	int 						_blockSize;
 	std::vector<SDL_Rect>		_blocks;
+	std::map<std::string, rgba>	_colmap;
 
 public:
 	NibblerGUI();

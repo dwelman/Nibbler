@@ -22,3 +22,16 @@ struct s_keypress
 	int p1west;
 	int quit;
 };
+
+struct rgba
+{
+	rgba();
+	rgba(int _r, int _g, int _b, int _a);
+	void	set(int _r, int _g, int _b, int _a);
+	rgba 		&operator=(rgba const & src);
+
+	int r;
+	int g;
+	int b;
+	int a;
+};

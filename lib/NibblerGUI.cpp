@@ -4,8 +4,39 @@
 
 #include "NibblerGUI.hpp"
 
+
+rgba::rgba() : r(0), g(0), b(0), a(0)
+{
+}
+
+rgba::rgba(int _r, int _g, int _b, int _a) : r(_r), g(_g), b(_b), a(_a)
+{
+}
+
+void rgba::set(int _r, int _g, int _b, int _a)
+{
+	r = _r;
+	g = _g;
+	b = _b;
+	a = _a;
+}
+
+rgba 		&rgba::operator=(rgba const & src)
+{
+	r = src.r;
+	g = src.g;
+	b = src.b;
+	a = src.a;
+
+	return (*this);
+}
+
+
 NibblerGUI::NibblerGUI() : _window(nullptr), _x(50), _y(50), _blockSize(5)
 {
+	_colmap[std::string("HEAD")] = rgba(7, 77, 27, 255);
+	_colmap[std::string("TAIL")] = rgba(11, 105, 36, 255);
+	_colmap[std::string("BODY")] = rgba(7, 61, 22, 255);
 }
 
 NibblerGUI::~NibblerGUI()
@@ -46,18 +77,25 @@ NibblerGUI 		&NibblerGUI::operator=(NibblerGUI const & src)
 
 void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj)
 {
-	// Set render color to blue ( rect will be rendered in this color )
+	rgba	col(0, 0, 0, 0);
+
 	SDL_RenderClear(_ren);
+	col.set(122, 114, 95, 255);
 	for (auto it = _blocks.begin(), end = _blocks.end();  it != end ; it++)
 	{
-		SDL_SetRenderDrawColor( _ren, 50, 50, 120, 255 );
+		SDL_SetRenderDrawColorRGB(_ren, col);
 		SDL_RenderFillRect( _ren, &(*it) );
-		SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
 	}
+	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
 
 	for (auto it = obj.begin(), end = obj.end();  it != end ; it++)
 	{
-		SDL_SetRenderDrawColor( _ren, 0, 0, 0, 0 );
+		if (_colmap.find(it->type) != _colmap.end())
+		{
+			SDL_SetRenderDrawColorRGB(_ren, _colmap[it->type]);
+		}
+		else
+			SDL_SetRenderDrawColor( _ren, 30, 99, 66, 0 );
 		if (it->y * _x + it->x < _blocks.size())
 			SDL_RenderFillRect( _ren, &_blocks[it->y * _x + it->x] );
 		SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
