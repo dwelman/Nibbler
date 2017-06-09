@@ -35,7 +35,6 @@ public:
 	int				getInput(s_keypress &keys);
 	void			setSize(int x, int y);
 
-
 	class SDLFailed : public std::exception
 	{
 	private:

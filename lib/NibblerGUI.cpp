@@ -17,7 +17,7 @@ void	NibblerGUI::start()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		throw	SDLFailed(SDL_GetError());
-	_window = SDL_CreateWindow("Sprite Render", 100, 100, XRES, YRES, SDL_WINDOW_SHOWN);
+	_window = SDL_CreateWindow("Basic Lib", 100, 100, XRES, YRES, SDL_WINDOW_SHOWN);
 	if (_window == nullptr)
 		throw	SDLFailed(SDL_GetError());
 	_ren = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -89,7 +89,7 @@ int			NibblerGUI::getInput(s_keypress &keys)
 	{
 		switch (event.type)
 		{
-			case SDL_KEYUP :
+			case SDL_KEYDOWN :
 			{
 				switch (event.key.keysym.sym)
 				{
@@ -146,7 +146,7 @@ void			NibblerGUI::setSize(int x, int y)
 {
 	_x = x;
 	_y = y;
-	_blockSize = YRES / _y;
+	_blockSize = (YRES  - 5)/ _y;
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
 
 	SDL_Rect r;
