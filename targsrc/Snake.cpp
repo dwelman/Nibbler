@@ -214,6 +214,18 @@ std::vector<DrawableObj> Snake::GetSnakeDrawableObjects()
 		DrawableObj temp;
 		temp.x = (*iter).getX();
 		temp.y = (*iter).getY();
+        if ((*iter).GetSegmentType() == SnakeSegment::HEAD)
+        {
+            temp.type = "HEAD";
+        }
+        else if ((*iter).GetSegmentType() == SnakeSegment::BODY)
+        {
+            temp.type = "BODY";
+        }
+        else
+        {
+            temp.type = "TAIL";
+        }
 		ret.push_back(temp);
 	}
 	return (ret);

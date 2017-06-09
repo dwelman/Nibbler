@@ -101,6 +101,7 @@ std::vector<DrawableObj> GameManager::GetDrawableObjects()
         DrawableObj temp;
         temp.x = (*iter)->getX();
         temp.y = (*iter)->getY();
+        temp.type = "BASIC_FOOD";
         ret.push_back(temp);
     }
     auto snakeTemp = snake->GetSnakeDrawableObjects();
