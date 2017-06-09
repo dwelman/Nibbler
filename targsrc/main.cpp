@@ -1,4 +1,5 @@
 #include <nibbler.hpp>
+#include <algorithm>
 #include "GameManager.hpp"
 
 
@@ -124,7 +125,7 @@ int main(int argc, char **argv)
         srand(time(NULL));
     }
     srand(time(NULL));
-    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH);
+    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH, std::max(mapWidth, mapHeight) + (std::max(mapWidth, mapHeight) / 2));
     GameManager::Instance().GiveSnake(snake);
     GameManager::Instance().SetMapHeight(mapHeight);
     GameManager::Instance().SetMapWidth(mapWidth);

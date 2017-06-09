@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
-#include <GameClock.hpp>
 #include <SDL2/SDL.h>
 #include "../lib/IGUI.hpp"
 

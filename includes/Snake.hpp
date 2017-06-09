@@ -8,7 +8,7 @@
 class Snake
 {
 public:
-	Snake(int x, int y, SnakeSegment::SegmentDirection dir);
+	Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed);
 	Snake(Snake const &s);
 	~Snake();
 
@@ -26,12 +26,16 @@ public:
 	int					        GetScore() const;
 	void				        SetScore(int _score);
     std::vector<DrawableObj>    GetSnakeDrawableObjects();
+    int                         GetSpeed() const;
+    void                        SetSpeed(int _speed);
+    void                        ChangeSpeed(int delta);
 private:
 	Snake();
 	std::vector<SnakeSegment>	snake;
 	int							stomachSize;
 	bool						isDying;
 	int							score;
+    int                         speed;
 
 	void						updateSnakeSegments();
 	void						moveSnake();

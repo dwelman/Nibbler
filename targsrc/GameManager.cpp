@@ -27,7 +27,7 @@ void GameManager::GiveSnake(Snake const & _snake)
 
 void GameManager::Update()
 {
-	if (SDL_GetTicks() - updateTick > 50)
+	if (SDL_GetTicks() - updateTick > snake->GetSpeed())
 	{
 		snake->UpdateSnake();
 		updateTick = SDL_GetTicks();

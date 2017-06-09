@@ -1,6 +1,6 @@
 #include "Snake.hpp"
 
-Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir) : stomachSize(0), isDying(false), score(0)
+Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed) : stomachSize(0), isDying(false), score(0), speed(_speed)
 {
 	SnakeSegment newSegment(x, y);
 	newSegment.SetSegmentType(SnakeSegment::HEAD);
@@ -30,6 +30,7 @@ Snake & Snake::operator=(Snake const & s)
 	this->isDying = s.isDying;
 	this->stomachSize = s.stomachSize;
 	this->score = s.score;
+    this->speed = s.speed;
 	return (*this);
 }
 
@@ -216,4 +217,19 @@ std::vector<DrawableObj> Snake::GetSnakeDrawableObjects()
 		ret.push_back(temp);
 	}
 	return (ret);
+}
+
+void Snake::SetSpeed(int _speed)
+{
+    speed = _speed;
+}
+
+int Snake::GetSpeed() const
+{
+    return (speed);
+}
+
+void Snake::ChangeSpeed(int delta)
+{
+    speed += delta;
 }
