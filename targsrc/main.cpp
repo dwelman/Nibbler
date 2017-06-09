@@ -37,6 +37,8 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	IGUI							*guiLib;
 	void							*handle;
 	std::vector<DrawableObj>		drawObj;
+    bool                            hasMoved = false;
+    bool                            isPaused = false;
 
 	handle = getHandle(startingLib.c_str());
 	guiLib = loadLibObject(handle);
@@ -46,31 +48,40 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	temp.y = 0;
 	temp.x = 0;
 	while (is_running)
-	{
-        drawObj = GameManager::Instance().GetDrawableObjects();
-		if (guiLib->getInput(keys) > 0)
-		{
-            if (keys.p1east > 0)
+    {
+        if (!isPaused)
+        {
+            if (guiLib->getInput(keys) > 0)
             {
-                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::EAST);
+                if (!hasMoved)
+                {
+                    if (keys.p1east > 0)
+                    {
+                        hasMoved = GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::EAST);
+                    }
+                    else if (keys.p1north)
+                    {
+                        hasMoved = GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::NORTH);
+                    }
+                    else if (keys.p1south)
+                    {
+                        hasMoved = GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::SOUTH);
+                    }
+                    else if (keys.p1west)
+                    {
+                        hasMoved = GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::WEST);
+                    }
+                }
             }
-            else if (keys.p1north)
-            {
-                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::NORTH);
-            }
-            else if (keys.p1south)
-            {
-                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::SOUTH);
-            }
-            else if (keys.p1west)
-            {
-                GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::WEST);
-            }
-		}
-		GameManager::Instance().Update();
-		guiLib->drawObjects(drawObj);
-		if (keys.quit > 0)
+            GameManager::Instance().Update();
+            hasMoved = false;
+            drawObj = GameManager::Instance().GetDrawableObjects();
+            guiLib->drawObjects(drawObj);
+        }
+        if (keys.quit > 0)
 			is_running = false;
+        if (keys.pause > 0)
+            isPaused = !isPaused;
 	}
 }
 

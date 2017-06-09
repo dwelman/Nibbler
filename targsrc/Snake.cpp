@@ -35,13 +35,14 @@ Snake & Snake::operator=(Snake const & s)
 	return (*this);
 }
 
-void Snake::ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir)
+bool Snake::ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir)
 {
 	if (snake[0].GetSegmentDirection() == SnakeSegment::NORTH || snake[0].GetSegmentDirection() == SnakeSegment::SOUTH)
 	{
 		if (dir == SnakeSegment::EAST || dir == SnakeSegment::WEST)
 		{
             snake[0].SetSegmentDirection(dir);
+            return (true);
 		}
 	}
 	else
@@ -49,8 +50,10 @@ void Snake::ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir)
 		if (dir == SnakeSegment::NORTH || dir == SnakeSegment::SOUTH)
 		{
             snake[0].SetSegmentDirection(dir);
+            return (true);
 		}
 	}
+    return (false);
 }
 
 void Snake::updateSnakeSegments()

@@ -15,7 +15,7 @@ public:
 	~Snake();
 
 	Snake				        &operator=(Snake const &s);
-    void				        ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir);
+    bool				        ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir);
     void				        PrintSnake();
     void				        UpdateSnake();
 	void				        Eat(Food const &f);
