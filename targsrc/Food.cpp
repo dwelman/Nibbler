@@ -1,6 +1,6 @@
 #include "Food.hpp"
 
-Food::Food(int _x, int _y, int _val, int _score) : Entity(_x, _y), val(_val), score(_score)
+Food::Food(int _x, int _y, int _val, int _score, int _speedChange) : Entity(_x, _y), val(_val), score(_score), speedChange(_speedChange)
 {
 }
 
@@ -18,6 +18,7 @@ Food & Food::operator=(Food const & f)
 	Entity::operator=(f);
 	this->val = f.val;
 	this->score = f.score;
+	this->speedChange = f.speedChange;
 	return (*this);
 }
 
@@ -39,4 +40,11 @@ int Food::getScore() const
 void Food::setScore(int _score)
 {
 	score = _score;
+}
+
+void Food::BeEaten(Snake &s) const
+{
+	s.ChangeScore(score);
+	s.ChangeStomachSize(val);
+	s.ChangeSpeed(speedChange);
 }

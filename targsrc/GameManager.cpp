@@ -58,7 +58,7 @@ void GameManager::spawnFood()
 	}
 	while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
 	//Change this later to a food factory
-	food.push_back(new Food(x, y, 1, 10));
+	food.push_back(new Food(x, y, 1, 10, -2));
 	foodCounter++;
 }
 

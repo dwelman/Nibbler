@@ -5,6 +5,8 @@
 #include "Food.hpp"
 #include "nibbler.hpp"
 
+class Food;
+
 class Snake
 {
 public:
@@ -25,10 +27,12 @@ public:
 	SnakeSegment		        &GetHead();
 	int					        GetScore() const;
 	void				        SetScore(int _score);
+    void                        ChangeScore(int delta);
     std::vector<DrawableObj>    GetSnakeDrawableObjects();
     int                         GetSpeed() const;
     void                        SetSpeed(int _speed);
     void                        ChangeSpeed(int delta);
+    void                        ChangeStomachSize(int delta);
 private:
 	Snake();
 	std::vector<SnakeSegment>	snake;
@@ -36,6 +40,7 @@ private:
 	bool						isDying;
 	int							score;
     int                         speed;
+    int                         maxSpeed;
 
 	void						updateSnakeSegments();
 	void						moveSnake();

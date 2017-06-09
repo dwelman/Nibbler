@@ -13,6 +13,7 @@ Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed) : sto
 	snake.push_back(newSegment);
 	addPiece();
 	addPiece();
+    maxSpeed = 20;
 }
 
 Snake::Snake(Snake const & s)
@@ -131,6 +132,7 @@ void Snake::UpdateSnake()
 		moveSnake();
 		updateSnakeSegments();
 		digestFood();
+        score++;
 	}
 	else
 	{
@@ -140,8 +142,7 @@ void Snake::UpdateSnake()
 
 void Snake::Eat(Food const &f)
 {
-	stomachSize += f.getVal();
-	score += f.getScore();
+	f.BeEaten(*this);
 }
 
 void Snake::Die()
@@ -244,4 +245,18 @@ int Snake::GetSpeed() const
 void Snake::ChangeSpeed(int delta)
 {
     speed += delta;
+    if (speed < maxSpeed)
+    {
+        speed = maxSpeed;
+    }
+}
+
+void Snake::ChangeScore(int delta)
+{
+    score += delta;
+}
+
+void Snake::ChangeStomachSize(int delta)
+{
+    stomachSize += delta;
 }
