@@ -5,7 +5,7 @@
 
 GameManager::GameManager() : foodCounter(0), snake(nullptr)
 {
-
+	updateTick = SDL_GetTicks();
 }
 
 GameManager::~GameManager()
@@ -27,7 +27,11 @@ void GameManager::GiveSnake(Snake const & _snake)
 
 void GameManager::Update()
 {
-	snake->UpdateSnake();
+	if (SDL_GetTicks() - updateTick > 50)
+	{
+		snake->UpdateSnake();
+		updateTick = SDL_GetTicks();
+	}
 	checkFoodCollision();
 	checkWallCollision();
 	if (foodCounter == 0)

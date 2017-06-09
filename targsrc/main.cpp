@@ -1,6 +1,6 @@
 #include <nibbler.hpp>
 #include "GameManager.hpp"
-#include <unistd.h>
+
 
 void	*getHandle(const char *lib)
 {
@@ -37,7 +37,6 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	void							*handle;
 	std::vector<DrawableObj>		drawObj;
 
-
 	handle = getHandle(startingLib.c_str());
 	guiLib = loadLibObject(handle);
 	guiLib->start();
@@ -45,14 +44,11 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	DrawableObj temp;
 	temp.y = 0;
 	temp.x = 0;
-	//drawObj.push_back(temp);
 	while (is_running)
 	{
         drawObj = GameManager::Instance().GetDrawableObjects();
 		if (guiLib->getInput(keys) > 0)
 		{
-			std::cout << keys.p1north << " " << keys.p1south << " "
-					  << keys.p1west << " " << keys.p1east << std::endl;
             if (keys.p1east > 0)
             {
                 GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::EAST);
@@ -70,14 +66,10 @@ void	gameLoop(const std::string &startingLib, int x, int y)
                 GameManager::Instance().GetSnake()->ChangeSnakeHeadDirection(SnakeSegment::WEST);
             }
 		}
-        GameManager::Instance().Update();
+		GameManager::Instance().Update();
 		guiLib->drawObjects(drawObj);
-
-		//DO something with keys
 		if (keys.quit > 0)
 			is_running = false;
-        //SDL_Delay(10);
-        usleep(100000);
 	}
 }
 

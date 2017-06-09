@@ -27,6 +27,7 @@ private:
 	int					mapHeight;
 	int					foodCounter;
 	std::vector<Food*>	food;
+	int	 				updateTick;
 
 	void				spawnFood();
 	void				checkFoodCollision();
