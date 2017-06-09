@@ -200,3 +200,16 @@ void Snake::SetScore(int _score)
 {
 	score = _score;
 }
+
+std::vector<DrawableObj> Snake::GetSnakeDrawableObjects()
+{
+	std::vector<DrawableObj> ret;
+	for (auto iter = snake.begin(); iter != snake.end(); iter++)
+	{
+		DrawableObj temp;
+		temp.x = (*iter).getX();
+		temp.y = (*iter).getY();
+		ret.push_back(temp);
+	}
+	return (ret);
+}

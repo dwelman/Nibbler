@@ -1,6 +1,7 @@
 #include "GameManager.hpp"
 #include <vector>
 #include <algorithm>
+#include <stdlib.h>
 
 GameManager::GameManager() : foodCounter(0), snake(nullptr)
 {
@@ -80,4 +81,17 @@ void GameManager::checkWallCollision()
 	{
 		snake->Die();
 	}
+}
+
+std::vector<DrawableObj> GameManager::GetDrawableObjects()
+{
+    std::vector<DrawableObj> ret;
+    for (auto iter = food.begin(); iter != food.end(); iter++)
+    {
+        DrawableObj temp;
+        temp.x = (*iter)->getX();
+        temp.y = (*iter)->getY();
+        ret.push_back(temp);
+    }
+    return (ret);
 }

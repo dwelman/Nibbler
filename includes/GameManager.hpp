@@ -3,6 +3,7 @@
 #include <string>
 #include "Snake.hpp"
 #include "Food.hpp"
+#include "nibbler.hpp"
 
 class GameManager
 {
@@ -10,10 +11,11 @@ public:
 	GameManager();
     ~GameManager();
 
-    static GameManager &Instance();
-	void			GiveSnake(Snake const &_snake);
-	void			Update();
-	Snake			*GetSnake();
+    static GameManager          &Instance();
+	void			            GiveSnake(Snake const &_snake);
+	void			            Update();
+	Snake			            *GetSnake();
+    std::vector<DrawableObj>    GetDrawableObjects();
 private:
     GameManager(GameManager const &gm);
 	GameManager &operator=(GameManager const &gm);
