@@ -24,6 +24,16 @@ struct s_keypress
 	int pause;
 };
 
+struct StartConfig
+{
+	int gameMode;
+};
+
+struct GameData
+{
+	int score;
+};
+
 struct rgba
 {
 	rgba();

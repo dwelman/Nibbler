@@ -7,11 +7,13 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "IGUI.hpp"
+#include <IGUI.hpp>
 #include <exception>
 #include <string>
 #include <iostream>
 #include <map>
+#include <UIGroup.hpp>
+
 
 #define YRES 720
 #define XRES 1024
@@ -26,7 +28,7 @@ private:
 	int 						_blockSize;
 	std::vector<SDL_Rect>		_blocks;
 	std::map<std::string, rgba>	_colmap;
-	SDL_Rect					_score;
+	UIElement					_score;
 
 public:
 	NibblerGUI();
@@ -34,10 +36,11 @@ public:
 	NibblerGUI(const NibblerGUI &src);
 
 	NibblerGUI 		&operator=(NibblerGUI const & src);
-	void			start();
-	void 			drawObjects(const std::vector<DrawableObj> &obj);
+	void			start(StartConfig &startConf);
+	void 			drawObjects(const std::vector<DrawableObj> &obj, GameData  &gameData);
 	int				getInput(s_keypress &keys);
 	void			setSize(int x, int y);
+
 
 	class SDLFailed : public std::exception
 	{

@@ -26,6 +26,7 @@ private:
 								mouseMove,
 								mouseLeave;
 	bool						mouseLeft;
+
 public:
 	static bool					enableSelection;
 	SDL_Color					color;
@@ -34,6 +35,7 @@ public:
 	bool						active;
 	bool						selected;
 	int							layer;
+	SDL_Texture					*texture;
 
 	UIElement();
 	UIElement(int _x, int _y, int w, int h);
@@ -89,6 +91,7 @@ public:
 
 	void				setColor(SDL_Color &col);
 	void				setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	void				setTexture(SDL_Texture *_texture);
 	virtual void		onMouseDown();
 	virtual void		onMouseUp();
 	virtual void		onMouseMove();
