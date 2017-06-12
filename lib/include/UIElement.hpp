@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
 class UIElement;
@@ -21,6 +22,7 @@ class UIElement
 {
 private:
 	SDL_Rect					rect;
+	SDL_Rect					text;
 	MouseEvent					mouseDown,
 								mouseUp,
 								mouseMove,
@@ -36,6 +38,7 @@ public:
 	bool						selected;
 	int							layer;
 	SDL_Texture					*texture;
+	SDL_Texture					*textTexture;
 
 	UIElement();
 	UIElement(int _x, int _y, int w, int h);
@@ -92,6 +95,7 @@ public:
 	void				setColor(SDL_Color &col);
 	void				setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 	void				setTexture(SDL_Texture *_texture);
+	void				setText(SDL_Renderer * ren, const char *text, TTF_Font *font, SDL_Color col);
 	virtual void		onMouseDown();
 	virtual void		onMouseUp();
 	virtual void		onMouseMove();

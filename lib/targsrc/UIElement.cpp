@@ -6,6 +6,7 @@ UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), select
 						  texture(nullptr)
 {
 	memset(&rect, 0, sizeof(SDL_Rect));
+	memset(&text, 0, sizeof(SDL_Rect));
 	memset(&mouseDown, 0, sizeof(MouseEvent));
 	memset(&mouseUp, 0, sizeof(MouseEvent));
 	memset(&mouseMove, 0, sizeof(MouseEvent));
@@ -21,6 +22,7 @@ UIElement::UIElement(int _x, int _y, int _w, int _h)
 	rect.y = _y;
 	rect.w = _w;
 	rect.h = _h;
+	memcpy (&text , &rect, sizeof(SDL_Rect));
 	memset(&mouseDown, 0, sizeof(MouseEvent));
 	memset(&mouseUp, 0, sizeof(MouseEvent));
 	memset(&mouseMove, 0, sizeof(MouseEvent));
@@ -125,14 +127,23 @@ void UIElement::draw(SDL_Renderer *ren)
 {
 	if (visible)
 	{
+
 		if (texture != nullptr)
 		{
 			SDL_RenderCopy(ren, texture, NULL, &rect);
+			if (textTexture != nullptr)
+			{
+				SDL_RenderCopy(ren, textTexture, NULL, &rect);
+			}
 		}
 		else
 		{
 			SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
 			SDL_RenderFillRect(ren, &rect);
+			if (textTexture != nullptr)
+			{
+				SDL_RenderCopy(ren, textTexture, NULL, &rect);
+			}
 			SDL_SetRenderDrawColor(ren, 42, 42, 42, 42);
 		}
 	}
@@ -209,6 +220,13 @@ void			UIElement::setTexture(SDL_Texture *_texture)
 	int texW, texH;
 	SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
 
+}
+
+void				UIElement::setText(SDL_Renderer * ren, const char *text, TTF_Font *font, SDL_Color col)
+{
+	SDL_Surface *text_surface = TTF_RenderText_Solid(font ,text, col);
+	textTexture = SDL_CreateTextureFromSurface(ren, text_surface);
+	SDL_FreeSurface(text_surface);
 }
 
 void UIElement::onMouseDown()

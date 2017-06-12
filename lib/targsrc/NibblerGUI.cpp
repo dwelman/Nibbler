@@ -4,6 +4,21 @@
 
 #include <NibblerGUI.hpp>
 
+SDL_Texture* LoadImage(std::string file, SDL_Renderer *renderer)
+{
+	SDL_Surface *loadedImage = nullptr;
+	SDL_Texture *texture = nullptr;
+	loadedImage = SDL_LoadBMP(file.c_str());
+
+	if (loadedImage != nullptr)
+	{
+		texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
+		SDL_FreeSurface(loadedImage);
+	}
+	else
+		std::cout << SDL_GetError() << std::endl;
+	return texture;
+}
 
 rgba::rgba() : r(0), g(0), b(0), a(0)
 {
@@ -31,6 +46,18 @@ rgba 		&rgba::operator=(rgba const & src)
 	return (*this);
 }
 
+void 		onStartMouseUp(void *d, UIElement *btn)
+{
+	*reinterpret_cast<int*>(d) = 1;
+	btn->setColor(176, 196, 182, 255);
+}
+
+void 		onStartMouseDown(void *d, UIElement *btn)
+{
+	//SDL_Color col = {196, 216, 202, 255};
+	d = nullptr;
+	btn->setColor(196, 216, 202, 255);
+}
 
 NibblerGUI::NibblerGUI() : _window(nullptr), _x(50), _y(50), _blockSize(5)
 {
@@ -59,6 +86,31 @@ void	NibblerGUI::start(StartConfig &config)
 		throw SDLFailed(SDL_GetError());
 	}
 	TTF_Init();
+	{
+		UIElement	startButton(XRES / 2 - 100, YRES / 2 - 50, 200, 40);
+		SDL_Event	event;
+		int 		start = 0;
+		TTF_Font	*font = TTF_OpenFont("resources/nokiafc22.ttf", 12);
+
+		startButton.setColor(100,100, 100, 100);
+		startButton.setText(_ren, "Start", font, {176, 196, 182, 255});
+		startButton.setMouseUp(&onStartMouseUp, start);
+		startButton.setMouseDown(&onStartMouseDown, start);
+		while (!start)
+		{
+			SDL_RenderClear(_ren);
+			startButton.draw(_ren);
+			while (SDL_PollEvent(&event))
+			{
+				startButton.checkEvent(event);
+				if  (event.type == SDL_QUIT)
+				{
+					exit(-1);
+				}
+			}
+			SDL_RenderPresent(_ren);
+		}
+	}
 }
 
 NibblerGUI::NibblerGUI(const NibblerGUI &src)
@@ -85,9 +137,9 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &ga
 
 	TTF_Font* Sans = TTF_OpenFont("resources/nokiafc22.ttf", 14);
 	SDL_Color White = {176, 196, 182, 255};
-	SDL_Surface *text_surface = TTF_RenderText_Solid(Sans ,"Score : ", White);
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(_ren, text_surface);
-	_score.setTexture(texture);
+//	SDL_Surface *text_surface = TTF_RenderText_Solid(Sans ,"Score : ", White);
+//	SDL_Texture *texture = SDL_CreateTextureFromSurface(_ren, text_surface);
+	_score.setText(_ren, "Score ", Sans, White);
 	_score.draw(_ren);
 
 	col.set(122, 114, 95, 255);
