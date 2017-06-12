@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "../lib/IGUI.hpp"
+#include <IGUI.hpp>
 
 class LibLoadFailed : public std::exception
 {
