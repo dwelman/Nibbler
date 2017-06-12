@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 
 struct DrawableObj
 {
@@ -31,7 +32,7 @@ struct StartConfig
 
 struct GameData
 {
-	int score;
+	std::map<int, int> scores;
 };
 
 struct rgba
