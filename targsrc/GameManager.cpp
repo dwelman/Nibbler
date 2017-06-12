@@ -2,10 +2,12 @@
 #include <vector>
 #include <algorithm>
 #include <stdlib.h>
+#include "BasicFood.hpp"
 
 GameManager::GameManager() : foodCounter(0), snake(nullptr)
 {
 	updateTick = SDL_GetTicks();
+    factory.LearnFood(new BasicFood());
 }
 
 GameManager::~GameManager()
@@ -58,7 +60,7 @@ void GameManager::spawnFood()
 	}
 	while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
 	//Change this later to a food factory
-	food.push_back(new Food(x, y, 1, 10, -2));
+	food.push_back(factory.CreateFood("BASIC_FOOD", x, y));
 	foodCounter++;
 }
 

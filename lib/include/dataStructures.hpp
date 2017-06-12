@@ -33,6 +33,7 @@ struct StartConfig
 struct GameData
 {
 	std::map<int, int> scores;
+	std::map<int, int> speeds;
 };
 
 struct rgba

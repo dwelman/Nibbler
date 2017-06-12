@@ -21,14 +21,18 @@ set(SOURCE_FILES 	targsrc/main.cpp
 					targsrc/Food.cpp
 					targsrc/Entity.cpp
 					targsrc/GameManager.cpp
+					targsrc/FoodFactory.cpp
+					targsrc/BasicFood.cpp
 		)
 
 
-set(INCLUDE_FILES includes/GameManager.hpp
-				  includes/Snake.hpp
-				  includes/SnakeSegment.hpp
-		          includes/Food.hpp
-				  includes/Entity.hpp
+set(INCLUDE_FILES 	includes/GameManager.hpp
+				  	includes/Snake.hpp
+				  	includes/SnakeSegment.hpp
+		          	includes/Food.hpp
+				  	includes/Entity.hpp
+				  	includes/FoodFactory.hpp
+					includes/BasicFood.hpp
 		)
 
 add_executable(nibbler ${SOURCE_FILES} ${INCLUDE_FILES})

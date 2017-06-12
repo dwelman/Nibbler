@@ -48,3 +48,14 @@ void Food::BeEaten(Snake &s) const
 	s.ChangeStomachSize(val);
 	s.ChangeSpeed(speedChange);
 }
+
+void Food::SetCoords(int _x, int _y)
+{
+	this->x = _x;
+	this->y = _y;
+}
+
+std::string Food::GetType() const
+{
+	return (type);
+}

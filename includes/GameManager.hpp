@@ -4,6 +4,7 @@
 #include "Snake.hpp"
 #include "Food.hpp"
 #include "nibbler.hpp"
+#include "FoodFactory.hpp"
 
 class GameManager
 {
@@ -28,6 +29,7 @@ private:
 	int					foodCounter;
 	std::vector<Food*>	food;
 	int	 				updateTick;
+	FoodFactory			factory;
 
 	void				spawnFood();
 	void				checkFoodCollision();
