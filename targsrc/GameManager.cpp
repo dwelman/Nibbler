@@ -53,32 +53,35 @@ Snake *GameManager::GetSnake()
 
 void GameManager::spawnFood()
 {
-	std::vector<int> xCoords = snake->GetAllX();
-	std::vector<int> yCoords = snake->GetAllY();
-	int	x = 0;
-	int y = 0;
-	do
-	{
-		x = rand() % mapWidth;
-		y = rand() % mapHeight;
-	}
-	while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
-    if (rand() % 100 >= 20)
+    int amount = rand() % 5 + 1;
+    for (int i = 0; i < amount; i++)
     {
-        food.push_back(factory.CreateFood("BASIC_FOOD", x, y));
-    }
-    else
-    {
+        std::vector<int> xCoords = snake->GetAllX();
+        std::vector<int> yCoords = snake->GetAllY();
+        int x = 0;
+        int y = 0;
+        do
+        {
+            x = rand() % mapWidth;
+            y = rand() % mapHeight;
+        } while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
         if (rand() % 100 >= 30)
         {
-            food.push_back(factory.CreateFood("SHRINK_FOOD", x, y));
+            food.push_back(factory.CreateFood("BASIC_FOOD", x, y));
         }
         else
         {
-            food.push_back(factory.CreateFood("SUPER_FOOD", x, y));
+            if (rand() % 100 >= 30)
+            {
+                food.push_back(factory.CreateFood("SHRINK_FOOD", x, y));
+            }
+            else
+            {
+                food.push_back(factory.CreateFood("SUPER_FOOD", x, y));
+            }
         }
+        foodCounter++;
     }
-	foodCounter++;
 }
 
 void GameManager::checkFoodCollision()
