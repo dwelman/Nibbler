@@ -201,15 +201,17 @@ void			NibblerGUI::setSize(int x, int y)
 {
 	_x = x;
 	_y = y;
-	_blockSize = (YRES  - 5)/ _y;
+
+	int scaler = (_x > _y) ? _x : _y;
+
+
+	_blockSize = YRES / scaler ; //(YRES  - 5) / scaler;
+	//sqrt(XRES * YRES) / sqrt(_x * _y);
+
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
 
 	_score = UIElement(x *_blockSize + 10, 5, (XRES - x *_blockSize) / 2, 25);
 	_score.setColor(120, 120, 120, 255 );
-	//_score.x = x *_blockSize + 10;
-//	_score.y = 5;
-//	_score.h = 25;
-//	_score.w = (XRES - x *_blockSize) / 2;
 
 	SDL_Rect r;
 	r.x = 5;
