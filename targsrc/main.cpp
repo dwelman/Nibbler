@@ -109,7 +109,7 @@ int main(int argc, char **argv)
         std::cout << "Map width too small" << std::endl;
         exit (-1);
     }
-    else if (mapWidth > 50)
+    else if (mapWidth > 100)
     {
         std::cout << "Map width too large" << std::endl;
         exit (-1);
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
         std::cout << "Map height too small" << std::endl;
         exit (-1);
     }
-    else if (mapHeight > 50)
+    else if (mapHeight > 100)
     {
         std::cout << "Map height too large" << std::endl;
         exit(-1);
