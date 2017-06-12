@@ -1,6 +1,6 @@
 #include "Snake.hpp"
 
-Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed) : stomachSize(0), isDying(false), score(0), speed(_speed)
+Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed, int _maxSpeed) : stomachSize(0), isDying(false), score(0), speed(_speed), maxSpeed(_maxSpeed)
 {
 	SnakeSegment newSegment(x, y);
 	newSegment.SetSegmentType(SnakeSegment::HEAD);
@@ -13,7 +13,6 @@ Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed) : sto
 	snake.push_back(newSegment);
 	addPiece();
 	addPiece();
-    maxSpeed = 20;
 }
 
 Snake::Snake(Snake const & s)
@@ -262,4 +261,9 @@ void Snake::ChangeScore(int delta)
 void Snake::ChangeStomachSize(int delta)
 {
     stomachSize += delta;
+}
+
+int Snake::GetMaxSpeed() const
+{
+    return (maxSpeed);
 }

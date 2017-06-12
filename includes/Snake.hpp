@@ -10,7 +10,7 @@ class Food;
 class Snake
 {
 public:
-	Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed);
+	Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed, int _maxSpeed);
 	Snake(Snake const &s);
 	~Snake();
 
@@ -33,6 +33,7 @@ public:
     void                        SetSpeed(int _speed);
     void                        ChangeSpeed(int delta);
     void                        ChangeStomachSize(int delta);
+    int                         GetMaxSpeed() const;
 private:
 	Snake();
 	std::vector<SnakeSegment>	snake;
