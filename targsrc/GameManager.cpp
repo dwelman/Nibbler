@@ -3,11 +3,15 @@
 #include <algorithm>
 #include <stdlib.h>
 #include "BasicFood.hpp"
+#include "ShrinkFood.hpp"
+#include "SuperFood.hpp"
 
 GameManager::GameManager() : foodCounter(0), snake(nullptr)
 {
 	updateTick = SDL_GetTicks();
     factory.LearnFood(new BasicFood());
+    factory.LearnFood(new ShrinkFood());
+    factory.LearnFood(new SuperFood());
 }
 
 GameManager::~GameManager()
@@ -59,8 +63,21 @@ void GameManager::spawnFood()
 		y = rand() % mapHeight;
 	}
 	while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
-	//Change this later to a food factory
-	food.push_back(factory.CreateFood("BASIC_FOOD", x, y));
+    if (rand() % 100 >= 20)
+    {
+        food.push_back(factory.CreateFood("BASIC_FOOD", x, y));
+    }
+    else
+    {
+        if (rand() % 100 >= 30)
+        {
+            food.push_back(factory.CreateFood("SHRINK_FOOD", x, y));
+        }
+        else
+        {
+            food.push_back(factory.CreateFood("SUPER_FOOD", x, y));
+        }
+    }
 	foodCounter++;
 }
 
@@ -103,7 +120,7 @@ std::vector<DrawableObj> GameManager::GetDrawableObjects()
         DrawableObj temp;
         temp.x = (*iter)->getX();
         temp.y = (*iter)->getY();
-        temp.type = "BASIC_FOOD";
+        temp.type = (*iter)->GetType();
         ret.push_back(temp);
     }
     auto snakeTemp = snake->GetSnakeDrawableObjects();

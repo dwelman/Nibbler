@@ -141,7 +141,6 @@ void Snake::UpdateSnake()
 		updateSnakeSegments();
 		digestFood();
         canTurn = true;
-        score++;
 	}
 	else
 	{

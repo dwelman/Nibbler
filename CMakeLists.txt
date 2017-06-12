@@ -23,6 +23,8 @@ set(SOURCE_FILES 	targsrc/main.cpp
 					targsrc/GameManager.cpp
 					targsrc/FoodFactory.cpp
 					targsrc/BasicFood.cpp
+					targsrc/ShrinkFood.cpp
+					targsrc/SuperFood.cpp
 		)
 
 
@@ -33,6 +35,8 @@ set(INCLUDE_FILES 	includes/GameManager.hpp
 				  	includes/Entity.hpp
 				  	includes/FoodFactory.hpp
 					includes/BasicFood.hpp
+					includes/ShrinkFood.hpp
+					includes/SuperFood.hpp
 		)
 
 add_executable(nibbler ${SOURCE_FILES} ${INCLUDE_FILES})
