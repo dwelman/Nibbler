@@ -13,6 +13,7 @@ Snake::Snake(int x, int y, SnakeSegment::SegmentDirection dir, int _speed, int _
 	snake.push_back(newSegment);
 	addPiece();
 	addPiece();
+    canTurn = true;
 }
 
 Snake::Snake(Snake const & s)
@@ -36,22 +37,27 @@ Snake & Snake::operator=(Snake const & s)
 
 bool Snake::ChangeSnakeHeadDirection(SnakeSegment::SegmentDirection dir)
 {
-	if (snake[0].GetSegmentDirection() == SnakeSegment::NORTH || snake[0].GetSegmentDirection() == SnakeSegment::SOUTH)
-	{
-		if (dir == SnakeSegment::EAST || dir == SnakeSegment::WEST)
-		{
-            snake[0].SetSegmentDirection(dir);
-            return (true);
-		}
-	}
-	else
-	{
-		if (dir == SnakeSegment::NORTH || dir == SnakeSegment::SOUTH)
-		{
-            snake[0].SetSegmentDirection(dir);
-            return (true);
-		}
-	}
+    if (canTurn)
+    {
+        if (snake[0].GetSegmentDirection() == SnakeSegment::NORTH || snake[0].GetSegmentDirection() == SnakeSegment::SOUTH)
+        {
+            if (dir == SnakeSegment::EAST || dir == SnakeSegment::WEST)
+            {
+                snake[0].SetSegmentDirection(dir);
+                canTurn = false;
+                return (true);
+            }
+        }
+        else
+        {
+            if (dir == SnakeSegment::NORTH || dir == SnakeSegment::SOUTH)
+            {
+                snake[0].SetSegmentDirection(dir);
+                canTurn = false;
+                return (true);
+            }
+        }
+    }
     return (false);
 }
 
@@ -70,9 +76,9 @@ void Snake::moveSnake()
 {
 	auto end = snake.end();
 	for (auto iter = snake.begin(); iter != end; iter++)
-	{
-		iter->Move();
-	}
+    {
+        iter->Move();
+    }
 }
 
 void Snake::addPiece()
@@ -134,6 +140,7 @@ void Snake::UpdateSnake()
 		moveSnake();
 		updateSnakeSegments();
 		digestFood();
+        canTurn = true;
         score++;
 	}
 	else

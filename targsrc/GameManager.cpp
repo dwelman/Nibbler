@@ -28,16 +28,16 @@ void GameManager::GiveSnake(Snake const & _snake)
 void GameManager::Update()
 {
 	if (SDL_GetTicks() - updateTick > snake->GetSpeed())
-	{
-		snake->UpdateSnake();
-		updateTick = SDL_GetTicks();
-	}
-	checkFoodCollision();
-	checkWallCollision();
-	if (foodCounter == 0)
-	{
-		spawnFood();
-	}
+    {
+        if (foodCounter == 0)
+        {
+            spawnFood();
+        }
+        snake->UpdateSnake();
+        checkFoodCollision();
+        checkWallCollision();
+        updateTick = SDL_GetTicks();
+    }
 }
 
 Snake *GameManager::GetSnake()

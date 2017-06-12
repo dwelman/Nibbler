@@ -73,6 +73,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
                 }
             }
             GameManager::Instance().Update();
+            gameData.score = GameManager::Instance().GetSnake()->GetScore();
             hasMoved = false;
             drawObj = GameManager::Instance().GetDrawableObjects();
             guiLib->drawObjects(drawObj, gameData);

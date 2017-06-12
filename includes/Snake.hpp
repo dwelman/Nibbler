@@ -39,6 +39,7 @@ private:
 	std::vector<SnakeSegment>	snake;
 	int							stomachSize;
 	bool						isDying;
+    bool                        canTurn;
 	int							score;
     int                         speed;
     int                         maxSpeed;
