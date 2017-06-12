@@ -2,7 +2,8 @@
 
 bool UIElement::enableSelection = true;
 
-UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), selected(false), layer(0)
+UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), selected(false), layer(0),
+						  texture(nullptr)
 {
 	memset(&rect, 0, sizeof(SDL_Rect));
 	memset(&mouseDown, 0, sizeof(MouseEvent));
@@ -13,7 +14,8 @@ UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), select
 }
 
 UIElement::UIElement(int _x, int _y, int _w, int _h)
-	: mouseLeft(true), visible(true), active(true), selected(false), layer(0)
+	: mouseLeft(true), visible(true), active(true), selected(false), layer(0),
+	  texture(nullptr)
 {
 	rect.x = _x;
 	rect.y = _y;
@@ -32,6 +34,8 @@ UIElement::UIElement(const UIElement & src)
 
 UIElement::~UIElement()
 {
+	if (texture)
+		SDL_DestroyTexture(texture);
 }
 
 UIElement & UIElement::operator=(const UIElement & src)
@@ -121,9 +125,16 @@ void UIElement::draw(SDL_Renderer *ren)
 {
 	if (visible)
 	{
-		SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
-		SDL_RenderFillRect(ren, &rect);
-		SDL_SetRenderDrawColor(ren, 42, 42, 42, 42);
+		if (texture != nullptr)
+		{
+			SDL_RenderCopy(ren, texture, NULL, &rect);
+		}
+		else
+		{
+			SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
+			SDL_RenderFillRect(ren, &rect);
+			SDL_SetRenderDrawColor(ren, 42, 42, 42, 42);
+		}
 	}
 }
 
@@ -190,6 +201,14 @@ void UIElement::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	color.b = b;
 	color.g = g;
 	color.r = r;
+}
+
+void			UIElement::setTexture(SDL_Texture *_texture)
+{
+	texture = _texture;
+	int texW, texH;
+	SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+
 }
 
 void UIElement::onMouseDown()

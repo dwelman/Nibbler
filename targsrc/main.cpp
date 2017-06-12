@@ -39,10 +39,12 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	std::vector<DrawableObj>		drawObj;
     bool                            hasMoved = false;
     bool                            isPaused = false;
+    StartConfig						config;
+    GameData						gameData;
 
 	handle = getHandle(startingLib.c_str());
 	guiLib = loadLibObject(handle);
-	guiLib->start();
+	guiLib->start(config);
 	guiLib->setSize(x, y);
 	while (is_running)
     {
@@ -73,7 +75,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
             GameManager::Instance().Update();
             hasMoved = false;
             drawObj = GameManager::Instance().GetDrawableObjects();
-            guiLib->drawObjects(drawObj);
+            guiLib->drawObjects(drawObj, gameData);
         }
         if (keys.quit > 0)
 			is_running = false;

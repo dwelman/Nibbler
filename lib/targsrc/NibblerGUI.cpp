@@ -44,8 +44,9 @@ NibblerGUI::~NibblerGUI()
 	SDL_Quit();
 }
 
-void	NibblerGUI::start()
+void	NibblerGUI::start(StartConfig &config)
 {
+	config.gameMode = 0;
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		throw	SDLFailed(SDL_GetError());
 	_window = SDL_CreateWindow("Basic Lib", 100, 100, XRES, YRES, SDL_WINDOW_SHOWN);
@@ -76,8 +77,9 @@ NibblerGUI 		&NibblerGUI::operator=(NibblerGUI const & src)
 	return (*this);
 }
 
-void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj)
+void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &gameData)
 {
+	(void) gameData;
 	rgba	col(0, 0, 0, 0);
 	SDL_RenderClear(_ren);
 
@@ -85,9 +87,8 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj)
 	SDL_Color White = {176, 196, 182, 255};
 	SDL_Surface *text_surface = TTF_RenderText_Solid(Sans ,"Score : ", White);
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(_ren, text_surface);
-	int texW, texH;
-	SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-	SDL_RenderCopy(_ren, texture, NULL, &_score);
+	_score.setTexture(texture);
+	_score.draw(_ren);
 
 	col.set(122, 114, 95, 255);
 	for (auto it = _blocks.begin(), end = _blocks.end();  it != end ; it++)
@@ -201,10 +202,11 @@ void			NibblerGUI::setSize(int x, int y)
 	_blockSize = (YRES  - 5)/ _y;
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
 
-	_score.x = x *_blockSize + 10;
-	_score.y = 5;
-	_score.h = 25;
-	_score.w = (XRES - x *_blockSize) / 2;
+	_score = UIElement(x *_blockSize + 10, 5, (XRES - x *_blockSize) / 2, 25);
+	//_score.x = x *_blockSize + 10;
+//	_score.y = 5;
+//	_score.h = 25;
+//	_score.w = (XRES - x *_blockSize) / 2;
 
 	SDL_Rect r;
 	r.x = 5;
