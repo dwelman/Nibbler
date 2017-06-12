@@ -10,6 +10,9 @@ NibblerGUI::NibblerGUI() : _window(nullptr), _x(50), _y(50), _blockSize(5)
 	_colmap[std::string("HEAD")] = createColor(7, 77, 27, 255);
 	_colmap[std::string("TAIL")] = createColor(11, 105, 36, 255);
 	_colmap[std::string("BODY")] = createColor(7, 61, 22, 255);
+	_colmap[std::string("BASIC_FOOD")] = createColor(242, 255, 10, 255);
+	_colmap[std::string("SHRINK_FOOD")] = createColor(204, 21, 12, 255);
+	_colmap[std::string("SUPER_FOOD")] = createColor(12, 88, 204, 255);
 	TTF_Init();
 }
 
@@ -60,6 +63,18 @@ void	NibblerGUI::start(StartConfig &config)
 				if  (event.type == SDL_QUIT)
 				{
 					exit(-1);
+				}
+				if  (event.type == SDL_KEYDOWN)
+				{
+					switch (event.key.keysym.sym)
+					{
+						case SDLK_RETURN:
+						{
+							startButton.onMouseDown();
+							start = 1;
+							break;
+						}
+					}
 				}
 			}
 			SDL_RenderPresent(_ren);
@@ -202,14 +217,8 @@ void			NibblerGUI::setSize(int x, int y)
 	_x = x;
 	_y = y;
 
-	int scaler = (_x > _y) ? _x : _y;
-
-
-	_blockSize = YRES / scaler ; //(YRES  - 5) / scaler;
-	//sqrt(XRES * YRES) / sqrt(_x * _y);
-
+	_blockSize = YRES / ((_x > _y) ? _x : _y) ;
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
-
 	_score = UIElement(x *_blockSize + 10, 5, (XRES - x *_blockSize) / 2, 25);
 	_score.setColor(120, 120, 120, 255 );
 
