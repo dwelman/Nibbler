@@ -21,6 +21,7 @@ private:
 	std::vector<SDL_Rect>				_blocks;
 	std::map<std::string, SDL_Color>	_colmap;
 	UIElement							_score;
+	UIElement							_highScore;
 	TTF_Font							*nokia14;
 
 public:

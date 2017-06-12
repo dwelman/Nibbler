@@ -109,12 +109,15 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &ga
 {
 	SDL_Color	col;
 	SDL_RenderClear(_ren);
-	std::string	score("Score : ");
+	std::string	score("    Score : "), hs ("Highscore : ");
 
 	col = createColor(122, 114, 95, 255);
 	score = score + std::to_string(gameData.scores[1]);
 	_score.setText(_ren, score.c_str() , nokia14, createColor(176, 196, 182, 255));
 	_score.draw(_ren);
+	hs = hs + std::to_string(gameData.highScore);
+	_highScore.setText(_ren, hs.c_str() , nokia14, createColor(176, 196, 182, 255));
+	_highScore.draw(_ren);
 
 	for (auto it = _blocks.begin(), end = _blocks.end();  it != end ; it++)
 	{
@@ -203,6 +206,7 @@ int			NibblerGUI::getInput(s_keypress &keys)
 						break;
 					}
 					case SDLK_p:
+					case SDLK_SPACE:
 					{
 						keys.pause = 1;
 						break;
@@ -228,6 +232,8 @@ void			NibblerGUI::setSize(int x, int y)
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
 	_score = UIElement(x *_blockSize + 10, 5, (XRES - x *_blockSize) / 2, 25);
 	_score.setColor(120, 120, 120, 255 );
+	_highScore = UIElement(x *_blockSize + 10, 25, (XRES - x *_blockSize) / 2, 25);
+	_highScore.setColor(120, 120, 120, 255 );
 
 	SDL_Rect r;
 	r.x = 5;
