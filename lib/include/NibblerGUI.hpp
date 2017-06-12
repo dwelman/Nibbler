@@ -5,15 +5,7 @@
 
 #define F_ERR 0
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <IGUI.hpp>
-#include <exception>
-#include <string>
-#include <iostream>
-#include <map>
-#include <UIGroup.hpp>
-
+#include <libIncludes.hpp>
 
 #define YRES 720
 #define XRES 1024
@@ -22,13 +14,14 @@
 class NibblerGUI : public IGUI
 {
 private:
-	SDL_Window					*_window;
-	SDL_Renderer				*_ren;
-	int 						_x, _y;
-	int 						_blockSize;
-	std::vector<SDL_Rect>		_blocks;
-	std::map<std::string, rgba>	_colmap;
-	UIElement					_score;
+	SDL_Window							*_window;
+	SDL_Renderer						*_ren;
+	int 								_x, _y;
+	int 								_blockSize;
+	std::vector<SDL_Rect>				_blocks;
+	std::map<std::string, SDL_Color>	_colmap;
+	UIElement							_score;
+	TTF_Font							*nokia14;
 
 public:
 	NibblerGUI();
