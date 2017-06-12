@@ -2,7 +2,7 @@
 // Created by Dean DU TOIT on 2017/06/06.
 //
 
-#include "NibblerGUI.hpp"
+#include <NibblerGUI.hpp>
 
 
 rgba::rgba() : r(0), g(0), b(0), a(0)
@@ -57,6 +57,7 @@ void	NibblerGUI::start()
 		SDL_DestroyWindow(_window);
 		throw SDLFailed(SDL_GetError());
 	}
+	TTF_Init();
 }
 
 NibblerGUI::NibblerGUI(const NibblerGUI &src)
@@ -78,8 +79,16 @@ NibblerGUI 		&NibblerGUI::operator=(NibblerGUI const & src)
 void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj)
 {
 	rgba	col(0, 0, 0, 0);
-
 	SDL_RenderClear(_ren);
+
+	TTF_Font* Sans = TTF_OpenFont("resources/nokiafc22.ttf", 14);
+	SDL_Color White = {176, 196, 182, 255};
+	SDL_Surface *text_surface = TTF_RenderText_Solid(Sans ,"Score : ", White);
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(_ren, text_surface);
+	int texW, texH;
+	SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+	SDL_RenderCopy(_ren, texture, NULL, &_score);
+
 	col.set(122, 114, 95, 255);
 	for (auto it = _blocks.begin(), end = _blocks.end();  it != end ; it++)
 	{
@@ -168,6 +177,11 @@ int			NibblerGUI::getInput(s_keypress &keys)
 						keys.quit = 1;
 						break;
 					}
+					case 112:
+					{
+						keys.pause = 1;
+						break;
+					}
 				}
 				break;
 			}
@@ -186,6 +200,11 @@ void			NibblerGUI::setSize(int x, int y)
 	_y = y;
 	_blockSize = (YRES  - 5)/ _y;
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
+
+	_score.x = x *_blockSize + 10;
+	_score.y = 5;
+	_score.h = 25;
+	_score.w = (XRES - x *_blockSize) / 2;
 
 	SDL_Rect r;
 	r.x = 5;

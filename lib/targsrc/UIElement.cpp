@@ -1,0 +1,236 @@
+#include <UIElement.hpp>
+
+bool UIElement::enableSelection = true;
+
+UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), selected(false), layer(0)
+{
+	memset(&rect, 0, sizeof(SDL_Rect));
+	memset(&mouseDown, 0, sizeof(MouseEvent));
+	memset(&mouseUp, 0, sizeof(MouseEvent));
+	memset(&mouseMove, 0, sizeof(MouseEvent));
+	memset(&mouseLeave, 0, sizeof(MouseEvent));
+	memset(&color, 0, sizeof(SDL_Color));
+}
+
+UIElement::UIElement(int _x, int _y, int _w, int _h)
+	: mouseLeft(true), visible(true), active(true), selected(false), layer(0)
+{
+	rect.x = _x;
+	rect.y = _y;
+	rect.w = _w;
+	rect.h = _h;
+	memset(&mouseDown, 0, sizeof(MouseEvent));
+	memset(&mouseUp, 0, sizeof(MouseEvent));
+	memset(&mouseMove, 0, sizeof(MouseEvent));
+	memset(&mouseLeave, 0, sizeof(MouseEvent));
+}
+
+UIElement::UIElement(const UIElement & src)
+{
+	*this = src;
+}
+
+UIElement::~UIElement()
+{
+}
+
+UIElement & UIElement::operator=(const UIElement & src)
+{
+	rect = src.rect;
+	visible = src.visible;
+	active = src.active;
+	mouseDown = src.mouseDown;
+	mouseUp = src.mouseUp;
+	mouseMove = src.mouseMove;
+	mouseLeft = src.mouseLeft;
+	return (*this);
+}
+
+bool UIElement::checkEvent(const SDL_Event & e, bool exec)
+{
+	switch (e.type)
+	{
+	case SDL_MOUSEBUTTONDOWN:
+	{
+		if (inRange(e.button.x, e.button.y))
+		{
+			if (exec)
+				onMouseDown();
+			mouseX = e.button.x;
+			mouseY = e.button.y;
+			if (enableSelection)
+			{
+				selected = true;
+				enableSelection = false;
+			}
+			return (true);
+		}
+		break;
+	}
+	case SDL_MOUSEBUTTONUP:
+	{
+		selected = false;
+		if (inRange(e.button.x, e.button.y))
+		{
+			if (exec)
+				onMouseUp();
+			mouseX = e.button.x;
+			mouseY = e.button.y;
+			enableSelection = true;
+			return (true);
+		}
+		break;
+	}
+	case SDL_MOUSEMOTION:
+	{
+		if (inRange(e.motion.x, e.motion.y) || selected)
+		{
+			mouseX = e.button.x;
+			mouseY = e.button.y;
+			if (exec)
+				onMouseMove();
+			mouseLeft = false;
+			return (true);
+		}
+		else
+		{
+			if (mouseLeft == false && exec)
+			{
+				onMouseLeave();
+			}
+			mouseLeft = true;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+	return false;
+}
+
+bool UIElement::inRange(int x, int y)
+{
+	return (   x > rect.x 
+			&& x < rect.x + rect.w
+			&& y > rect.y
+			&& y < rect.y + rect.h
+			&& active);
+}
+
+void UIElement::draw(SDL_Renderer *ren)
+{
+	if (visible)
+	{
+		SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
+		SDL_RenderFillRect(ren, &rect);
+		SDL_SetRenderDrawColor(ren, 42, 42, 42, 42);
+	}
+}
+
+void UIElement::show()
+{
+	visible = true;
+}
+
+void UIElement::hide()
+{
+	visible = false;
+}
+
+void UIElement::enable()
+{
+	this->active = true;
+}
+
+void UIElement::disable()
+{
+	this->active = false;
+}
+
+void UIElement::move(int x, int y)
+{
+	rect.x = x;
+	rect.y = y;
+}
+
+void UIElement::resize(int w, int h)
+{
+	rect.w = w;
+	rect.h = h;
+}
+
+int UIElement::width()
+{
+	return rect.w;
+}
+
+int UIElement::height()
+{
+	return rect.h;
+}
+
+int UIElement::posX()
+{
+	return rect.x;
+}
+
+int UIElement::posY()
+{
+	return rect.y;
+}
+
+void UIElement::setColor(SDL_Color & col)
+{
+	memcpy(&color, &col, sizeof(SDL_Color));
+}
+
+void UIElement::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	color.a = a;
+	color.b = b;
+	color.g = g;
+	color.r = r;
+}
+
+void UIElement::onMouseDown()
+{
+	if (mouseDown.set)
+	{
+		mouseDown(this);
+	}
+}
+
+void UIElement::onMouseUp()
+{
+	if (mouseUp.set)
+	{
+		mouseUp(this);
+	}
+}
+
+void UIElement::onMouseMove()
+{
+	if (mouseMove.set)
+	{
+		mouseMove(this);
+	}
+}
+
+void UIElement::onMouseLeave()
+{
+	if (mouseLeave.set)
+	{
+		mouseLeave(this);
+	}
+}
+
+MouseEvent & MouseEvent::operator=(const MouseEvent & src)
+{
+	memcpy(this, &src, sizeof(MouseEvent));
+	return (*this);
+}
+
+void MouseEvent::operator()(UIElement *elem)
+{
+	e(param, elem);
+}

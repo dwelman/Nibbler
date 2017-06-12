@@ -2,3 +2,8 @@
 .*
 *.o
 cmake-build-debug/*
+*cmake*
+*CMakeCache*
+*CMakeFiles*
+Makefile
+*.dylib

@@ -44,9 +44,6 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 	guiLib = loadLibObject(handle);
 	guiLib->start();
 	guiLib->setSize(x, y);
-	DrawableObj temp;
-	temp.y = 0;
-	temp.x = 0;
 	while (is_running)
     {
         if (!isPaused)

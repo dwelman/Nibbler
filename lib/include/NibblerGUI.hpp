@@ -6,6 +6,7 @@
 #define F_ERR 0
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "IGUI.hpp"
 #include <exception>
 #include <string>
@@ -25,6 +26,7 @@ private:
 	int 						_blockSize;
 	std::vector<SDL_Rect>		_blocks;
 	std::map<std::string, rgba>	_colmap;
+	SDL_Rect					_score;
 
 public:
 	NibblerGUI();

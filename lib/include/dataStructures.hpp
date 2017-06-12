@@ -21,6 +21,7 @@ struct s_keypress
 	int p1east;
 	int p1west;
 	int quit;
+	int pause;
 };
 
 struct rgba
