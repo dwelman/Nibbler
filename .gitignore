@@ -1,4 +1,4 @@
-!/.gitignore
+!.gitignore
 .*
 *.o
 cmake-build-debug/*
