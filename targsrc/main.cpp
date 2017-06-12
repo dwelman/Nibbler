@@ -73,7 +73,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
                 }
             }
             GameManager::Instance().Update();
-            gameData.score = GameManager::Instance().GetSnake()->GetScore();
+            gameData.scores.emplace(std::make_pair(GameManager::Instance().GetSnake()->GetPlayerNumber(), GameManager::Instance().GetSnake()->GetScore()));
             hasMoved = false;
             drawObj = GameManager::Instance().GetDrawableObjects();
             guiLib->drawObjects(drawObj, gameData);
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
     }
     srand(time(NULL));
     int startingSpeed = 100 - sqrt(mapWidth * mapHeight) + (sqrt(mapWidth * mapHeight) / 1.5f);
-    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH, startingSpeed, startingSpeed / 5);
+    Snake snake(1, mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH, startingSpeed, startingSpeed / 5);
     GameManager::Instance().GiveSnake(snake);
     GameManager::Instance().SetMapHeight(mapHeight);
     GameManager::Instance().SetMapWidth(mapWidth);
