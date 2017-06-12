@@ -16,7 +16,7 @@ SDL_Color	createColor(int r, int g, int b, int a)
 	return (ret);
 }
 
-SDL_Texture* LoadImage(std::string file, SDL_Renderer *renderer)
+SDL_Texture *LoadImage(std::string file, SDL_Renderer *renderer)
 {
 	SDL_Surface *loadedImage = nullptr;
 	SDL_Texture *texture = nullptr;

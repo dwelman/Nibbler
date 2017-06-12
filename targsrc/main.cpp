@@ -85,6 +85,8 @@ void	gameLoop(const std::string &startingLib, int x, int y)
             drawObj = GameManager::Instance().GetDrawableObjects();
             guiLib->drawObjects(drawObj, gameData);
         }
+        else
+			guiLib->getInput(keys);
         if (keys.quit > 0)
 			is_running = false;
         if (keys.pause > 0)

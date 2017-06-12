@@ -202,7 +202,7 @@ int			NibblerGUI::getInput(s_keypress &keys)
 						keys.quit = 1;
 						break;
 					}
-					case 112:
+					case SDLK_p:
 					{
 						keys.pause = 1;
 						break;
