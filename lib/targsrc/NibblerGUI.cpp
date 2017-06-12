@@ -44,6 +44,7 @@ void	NibblerGUI::start(StartConfig &config)
 		UIElement	startButton(XRES / 2 - 100, YRES / 2 - 50, 200, 40);
 		SDL_Event	event;
 		int 		start = 0;
+		int			s = 0;
 		TTF_Font	*font = TTF_OpenFont("resources/nokiafc22.ttf", 12);
 
 		startButton.setColor(100,100, 100, 100);
@@ -55,6 +56,12 @@ void	NibblerGUI::start(StartConfig &config)
 		startButton.setMouseDown(&onStartMouseDown, start);
 		while (!start)
 		{
+			if (s)
+			{
+				s--;
+				if (!s)
+					start = 1;
+			}
 			SDL_RenderClear(_ren);
 			startButton.draw(_ren);
 			while (SDL_PollEvent(&event))
@@ -71,7 +78,7 @@ void	NibblerGUI::start(StartConfig &config)
 						case SDLK_RETURN:
 						{
 							startButton.onMouseDown();
-							start = 1;
+							s = 5;
 							break;
 						}
 					}

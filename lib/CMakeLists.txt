@@ -32,3 +32,13 @@ include_directories(include ../includes)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADERS})
 target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
+
+MESSAGE( STATUS "BASE_DIR: " ${BASE_DIR} )
+if (CALLED_FROM_PARENT)
+        set(LIBRARY_EXTENSION "dylib")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "lib${PROJECT_NAME}.${LIBRARY_EXTENSION}"
+                ${BASE_DIR})
+
+endif()

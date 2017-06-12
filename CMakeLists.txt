@@ -42,3 +42,8 @@ set(INCLUDE_FILES 	includes/GameManager.hpp
 add_executable(nibbler ${SOURCE_FILES} ${INCLUDE_FILES})
 
 target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
+
+set(CALLED_FROM_PARENT true)
+set(BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_subdirectory(lib)
