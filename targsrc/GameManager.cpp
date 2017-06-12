@@ -64,7 +64,8 @@ void GameManager::spawnFood()
         {
             x = rand() % mapWidth;
             y = rand() % mapHeight;
-        } while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
+        }
+        while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
         if (rand() % 100 >= 30)
         {
             food.push_back(factory.CreateFood("BASIC_FOOD", x, y));

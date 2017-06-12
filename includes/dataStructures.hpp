@@ -34,6 +34,7 @@ struct GameData
 {
 	std::map<int, int> scores;
 	std::map<int, int> speeds;
+	int 	highScore;
 };
 
 struct rgba

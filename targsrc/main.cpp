@@ -1,6 +1,9 @@
 #include <nibbler.hpp>
 #include <algorithm>
 #include "GameManager.hpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 void	*getHandle(const char *lib)
@@ -42,6 +45,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
     StartConfig						config;
     GameData						gameData;
 
+    gameData.highScore = GameManager::Instance().highScore;
 	handle = getHandle(startingLib.c_str());
 	guiLib = loadLibObject(handle);
 	guiLib->start(config);
@@ -145,8 +149,29 @@ int main(int argc, char **argv)
     GameManager::Instance().SetMapHeight(mapHeight);
     GameManager::Instance().SetMapWidth(mapWidth);
 	try
-	{
-		gameLoop(startingLib, mapWidth, mapHeight);
+    {
+        int highScore;
+        std::ifstream   iFile("highscore");
+        if (iFile.is_open())
+        {
+            std::string temp;
+            getline(iFile, temp);
+            highScore = std::stoi(temp);
+            iFile.close();
+        }
+        else
+        {
+            highScore = 0;
+        }
+        GameManager::Instance().highScore = highScore;
+        gameLoop(startingLib, mapWidth, mapHeight);
+        if (GameManager::Instance().GetSnake()->GetScore() > highScore)
+        {
+            highScore = GameManager::Instance().GetSnake()->GetScore();
+        }
+
+        std::ofstream   oFile("highscore");
+        oFile << highScore;
 	}
 	catch (std::exception &e)
 	{

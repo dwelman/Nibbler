@@ -19,6 +19,8 @@ public:
     std::vector<DrawableObj>    GetDrawableObjects();
     void                        SetMapWidth(int width);
     void                        SetMapHeight(int height);
+
+	int 						highScore;
 private:
     GameManager(GameManager const &gm);
 	GameManager &operator=(GameManager const &gm);
