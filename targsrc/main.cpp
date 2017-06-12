@@ -133,7 +133,7 @@ int main(int argc, char **argv)
         srand(time(NULL));
     }
     srand(time(NULL));
-    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH, (std::max(mapWidth, mapHeight) * 2) - (std::max(mapWidth, mapHeight) / 2));
+    Snake snake(mapWidth / 2, mapHeight / 2, SnakeSegment::NORTH, 100 - sqrt(mapWidth * mapHeight) + (sqrt(mapWidth * mapHeight) / 1.5f));
     GameManager::Instance().GiveSnake(snake);
     GameManager::Instance().SetMapHeight(mapHeight);
     GameManager::Instance().SetMapWidth(mapWidth);
