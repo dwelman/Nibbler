@@ -33,6 +33,43 @@ IGUI	*loadLibObject(void *handle)
 	return (guiObject);
 }
 
+void	libSwitch(int libID, IGUI *&curLib)
+{
+	try
+	{
+		void	*handle;
+		switch (libID)
+		{
+			case  1:
+			{
+				handle = getHandle("libBasicRender.dylib");
+				IGUI *newLib = loadLibObject(handle);
+				curLib->passWindow(newLib);
+				newLib->init();
+				newLib->setSize(curLib->getX(), curLib->getY());
+				delete(curLib);
+				curLib = newLib;
+				break;
+			}
+			case  2:
+			{
+				handle = getHandle("libSpriteRender.dylib");
+				IGUI *newLib = loadLibObject(handle);
+				curLib->passWindow(newLib);
+				newLib->init();
+				newLib->setSize(curLib->getX(), curLib->getY());
+				delete(curLib);
+				curLib = newLib;
+				break;
+			}
+		}
+	}
+	catch (std::exception &e)
+	{
+		std::cerr << "Could not switch basicLib : " << e.what() << std::endl;
+	}
+}
+
 void	gameLoop(const std::string &startingLib, int x, int y)
 {
 	bool 							is_running = true;
@@ -44,15 +81,22 @@ void	gameLoop(const std::string &startingLib, int x, int y)
     bool                            isPaused = false;
     StartConfig						config;
     GameData						gameData;
+    bool							started = false;
 
     gameData.highScore = GameManager::Instance().highScore;
 	handle = getHandle(startingLib.c_str());
 	guiLib = loadLibObject(handle);
-	guiLib->start(config);
+	guiLib->init();
 	guiLib->setSize(x, y);
 	while (is_running)
     {
-        if (!isPaused)
+    	if (!started)
+		{
+			memset(&keys, 0, sizeof(s_keypress));
+			keys.libswitch = guiLib->start(config);
+			started = keys.libswitch  == 0;
+		}
+		if (!isPaused && started)
         {
             if (guiLib->getInput(keys) > 0)
             {
@@ -85,12 +129,15 @@ void	gameLoop(const std::string &startingLib, int x, int y)
             drawObj = GameManager::Instance().GetDrawableObjects();
             guiLib->drawObjects(drawObj, gameData);
         }
-        else
+        else if (started)
 			guiLib->getInput(keys);
+		if (keys.libswitch > 0)
+			libSwitch(keys.libswitch, guiLib);
         if (keys.quit > 0)
 			is_running = false;
         if (keys.pause > 0)
             isPaused = !isPaused;
+
 	}
 }
 

@@ -46,4 +46,5 @@ target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
 set(CALLED_FROM_PARENT true)
 set(BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(lib)
+add_subdirectory(basicLib)
+add_subdirectory(spriteLib)

@@ -23,11 +23,18 @@ struct s_keypress
 	int p1west;
 	int quit;
 	int pause;
+	int	libswitch;
 };
 
 struct StartConfig
 {
 	int gameMode;
+};
+
+struct EventContainer
+{
+	int start;
+	SDL_Renderer	*ren;
 };
 
 struct GameData

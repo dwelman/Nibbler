@@ -6,6 +6,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <IGUI.hpp>
 #include <exception>
 #include <string>
@@ -17,3 +18,6 @@
 void 		onStartMouseUp(void *d, UIElement *btn);
 void 		onStartMouseDown(void *d, UIElement *btn);
 SDL_Color	createColor(int r, int g, int b, int a);
+SDL_Texture *LoadImage(std::string file, SDL_Renderer *renderer);
+
+
