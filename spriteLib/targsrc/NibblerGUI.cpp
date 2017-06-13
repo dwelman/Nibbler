@@ -7,9 +7,6 @@
 NibblerGUI::NibblerGUI() : _window(nullptr), _x(50), _y(50), _blockSize(5), clean(true)
 { if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		throw	SDLFailed(SDL_GetError());
-
-	//_colmap[std::string("SHRINK_FOOD")] = createColor(204, 21, 12, 255);
-	//_colmap[std::string("SUPER_FOOD")] = createColor(12, 88, 204, 255);
 	TTF_Init();
 }
 
@@ -41,14 +38,14 @@ void			NibblerGUI::init()
 		SDL_DestroyWindow(_window);
 		throw SDLFailed(SDL_GetError());
 	}
-	nokia14 = TTF_OpenFont("resources/nokiafc22.ttf", 14);
+	nokia14 = TTF_OpenFont("resources/ComicSans.ttf", 14);
 	_texmap[std::string("HEAD")] = LoadImage("resources/sprites/snake_head.png", _ren);
 	_texmap[std::string("TAIL")] = LoadImage("resources/sprites/snake_tail.png", _ren);
 	_texmap[std::string("BODY")] = LoadImage("resources/sprites/snake_body.png", _ren);
-	_texmap[std::string("BASIC_FOOD")] = LoadImage("resources/sprites/chicken.png", _ren);
-	_texmap[std::string("SHRINK_FOOD")] = LoadImage("resources/sprites/lettuce.png", _ren);
-	_texmap[std::string("SUPER_FOOD")] = LoadImage("resources/sprites/chilli.png", _ren);
-	_texmap[std::string("FLOOR")] = LoadImage("resources/sprites/dirt.jpg", _ren);
+	_texmap[std::string("BASIC_FOOD")] = LoadImage("resources/sprites/rat.png", _ren);
+	_texmap[std::string("SHRINK_FOOD")] = LoadImage("resources/sprites/weeds.png", _ren);
+	_texmap[std::string("SUPER_FOOD")] = LoadImage("resources/sprites/B.png", _ren);
+	_texmap[std::string("FLOOR")] = LoadImage("resources/sprites/grass.jpg", _ren);
 }
 
 int	NibblerGUI::start(StartConfig &config)
@@ -140,6 +137,7 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &ga
 	SDL_Color	col;
 	SDL_RenderClear(_ren);
 	std::string	score("    Score : "), hs ("Highscore : ");
+	int 		i;
 
 	col = createColor(122, 114, 95, 255);
 	score = score + std::to_string(gameData.scores[1]);
@@ -151,17 +149,36 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &ga
 	floor.draw(_ren);
 	for (auto it = obj.begin(), end = obj.end();  it != end ; it++)
 	{
-		if (_texmap.find(it->type) != _texmap.end())
+		i = it->y * _x + it->x;
+		if (it->y < _y && it->x < _x )
 		{
-			_blocks[it->y * _x + it->x]->setTexture(_texmap[it->type]);
-		}
-		else
-		{
-			_blocks[it->y * _x + it->x]->setTexture(nullptr);
-		}
-	//	switch
+			if (_texmap.find(it->type) != _texmap.end())
+			{
+				_blocks[i]->setTexture(_texmap[it->type]);
+				_blocks[i]->setFlip(SDL_FLIP_NONE);
+				_blocks[i]->setRotation(0);
+				switch (it->dir)
+				{
+					case 'N' :
+						break;
+					case 'S' :
+						_blocks[i]->setFlip(SDL_FLIP_VERTICAL);
+						break;
+					case 'E' :
+						_blocks[i]->setRotation(90.0F);
+					case 'W' :
+						_blocks[i]->setRotation(-90.0F);
+						break;
 
-		_blocks[it->y * _x + it->x]->draw(_ren);
+				}
+				_blocks[i]->draw(_ren);
+			}
+			else
+			{
+
+				_blocks[i]->setTexture(nullptr);
+			}
+		}
 	}
 	SDL_RenderPresent(_ren);
 }
@@ -270,19 +287,19 @@ void			NibblerGUI::setSize(int x, int y)
 
 	_blockSize = YRES / ((_x > _y) ? _x : _y) ;
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
-	_score = UIElement(x *_blockSize + 10, 5, (XRES - x *_blockSize) / 2, 25);
+	_score = UIElement(x *_blockSize + 10, YRES - 50, (XRES - x *_blockSize) / 2, 25);
 	_score.setColor(120, 120, 120, 255 );
-	_highScore = UIElement(x *_blockSize + 10, 25, (XRES - x *_blockSize) / 2, 25);
+	_highScore = UIElement(x *_blockSize + 10, YRES - 25, (XRES - x *_blockSize) / 2, 25);
 	_highScore.setColor(120, 120, 120, 255 );
+	floor.move(5, 5);
 	floor.setTexture(_texmap["FLOOR"]);
 	floor.resize(_blockSize * _x, _blockSize * _y);
 	floor.active = true;
 	floor.visible = true;
-	//UIElement r(5, 5, _blockSize, _blockSize);
-	for (int i = 0; i < _y; i++ )
+	for (unsigned int i = 0; i < _y; i++ )
 	{
 		int ty = i * _blockSize + 5;
-		for (int j = 0; j < _x; j++ )
+		for (unsigned int j = 0; j < _x; j++ )
 		{
 			UIElement *r = new UIElement(j * _blockSize + 5, ty, _blockSize, _blockSize);
 			_blocks.push_back(r);

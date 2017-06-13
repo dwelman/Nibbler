@@ -17,7 +17,7 @@ class NibblerGUI : public IGUI
 private:
 	SDL_Window							*_window;
 	SDL_Renderer						*_ren;
-	int 								_x, _y;
+	unsigned  int						_x, _y;
 	int 								_blockSize;
 	std::vector<UIElement*>				_blocks;
 	std::map<std::string, SDL_Texture*>	_texmap;

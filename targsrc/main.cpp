@@ -137,7 +137,6 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 			is_running = false;
         if (keys.pause > 0)
             isPaused = !isPaused;
-
 	}
 }
 

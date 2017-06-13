@@ -40,6 +40,7 @@ public:
 	SDL_Texture					*texture;
 	SDL_Texture					*textTexture;
 	SDL_RendererFlip			flip;
+	double 						rot;
 
 	UIElement();
 	UIElement(int _x, int _y, int w, int h);
@@ -61,6 +62,7 @@ public:
 	int			posX();
 	int			posY();
 	void		setFlip(SDL_RendererFlip flip);
+	void		setRotation(double flip);
 
 	template<typename T>
 	void		setMouseDown(onEvent *func, T &param)

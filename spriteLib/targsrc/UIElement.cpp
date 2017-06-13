@@ -3,7 +3,7 @@
 bool UIElement::enableSelection = true;
 
 UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), selected(false), layer(0),
-						  texture(nullptr), textTexture(nullptr), flip(SDL_FLIP_NONE)
+						  texture(nullptr), textTexture(nullptr), flip(SDL_FLIP_NONE), rot(0)
 {
 	memset(&rect, 0, sizeof(SDL_Rect));
 	memset(&text, 0, sizeof(SDL_Rect));
@@ -16,7 +16,7 @@ UIElement::UIElement() :  mouseLeft(true), visible(false), active(false), select
 
 UIElement::UIElement(int _x, int _y, int _w, int _h)
 	: mouseLeft(true), visible(true), active(true), selected(false), layer(0),
-	  texture(nullptr), textTexture(nullptr), flip(SDL_FLIP_NONE)
+	  texture(nullptr), textTexture(nullptr), flip(SDL_FLIP_NONE), rot(0)
 {
 	rect.x = _x;
 	rect.y = _y;
@@ -131,13 +131,10 @@ void UIElement::draw(SDL_Renderer *ren)
 
 		if (texture != nullptr)
 		{
-	//		SDL_Rect		temp;
 			SDL_Point		point;
-			point.x = 0;
-			point.y = 0;
-			SDL_RenderCopyEx(ren, texture, NULL , &rect, 0, &point, flip );
-		//	SDL_RenderCopy(ren, texture, NULL, &rect);
-
+			point.x = width()/2;
+			point.y = height()/2;
+			SDL_RenderCopyEx(ren, texture, NULL , &rect, rot, &point, flip );
 			if (textTexture != nullptr)
 			{
 
@@ -282,4 +279,9 @@ void MouseEvent::operator()(UIElement *elem)
 void		UIElement::setFlip(SDL_RendererFlip _flip)
 {
 	this->flip = _flip;
+}
+
+void		UIElement::setRotation(double _rot)
+{
+	rot = _rot;
 }
