@@ -4,8 +4,11 @@
 
 #include <NibblerGUI.hpp>
 
-NibblerGUI::NibblerGUI() : _window(nullptr), _x(50), _y(50), _blockSize(5), clean(true)
-{ if (SDL_Init(SDL_INIT_VIDEO) != 0)
+NibblerGUI::NibblerGUI() : _window(nullptr), _ren(nullptr), _x(50), _y(50), _blockSize(5),
+	clean(true)
+
+{
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		throw	SDLFailed(SDL_GetError());
 	TTF_Init();
 }
@@ -20,6 +23,8 @@ NibblerGUI::~NibblerGUI()
 			SDL_DestroyWindow(_window);
 		SDL_Quit();
 	}
+	for (auto it = _texmap.begin(); it != _texmap.end(); it++)
+		SDL_DestroyTexture((*it).second);
 }
 
 void			NibblerGUI::init()
@@ -45,7 +50,11 @@ void			NibblerGUI::init()
 	_texmap[std::string("BASIC_FOOD")] = LoadImage("resources/sprites/rat.png", _ren);
 	_texmap[std::string("SHRINK_FOOD")] = LoadImage("resources/sprites/weeds.png", _ren);
 	_texmap[std::string("SUPER_FOOD")] = LoadImage("resources/sprites/B.png", _ren);
-	_texmap[std::string("FLOOR")] = LoadImage("resources/sprites/grass.jpg", _ren);
+	_texmap[std::string("FLOOR")] = LoadImage("resources/sprites/whitefloor.jpg", _ren);
+	_texmap[std::string("PLAY")] = LoadImage("resources/sprites/play_button.png", _ren);
+	_texmap[std::string("JUNGLE")] = LoadImage("resources/sprites/jungle.png", _ren);
+	_texmap[std::string("CAPTION")] = LoadImage("resources/sprites/snek.png", _ren);
+
 }
 
 int	NibblerGUI::start(StartConfig &config)
@@ -55,6 +64,8 @@ int	NibblerGUI::start(StartConfig &config)
 		SDL_RenderClear(_ren);
 		UIElement		startButton(XRES / 2 - 150, YRES / 2 - 100, 300, 200);
 		UIElement		backdrop(0, 0 ,XRES, YRES);
+		UIElement		caption(XRES / 2 - 250, YRES / 4 - 100, 500, 200);;
+
 		UIGroup			gr;
 		SDL_Event		event;
 		int				s = 0;
@@ -63,15 +74,17 @@ int	NibblerGUI::start(StartConfig &config)
 		startButton.setColor(100,100, 100, 100);
 		ev.ren = _ren;
 		ev.start = 0;
-		startButton.setTexture(LoadImage("resources/sprites/play_button.png", _ren));
-		backdrop.setTexture(LoadImage("resources/sprites/jungle.png", _ren));
-
+		startButton.setTexture(_texmap["PLAY"]);
+		backdrop.setTexture(_texmap["JUNGLE"]);
+		caption.setTexture(_texmap["CAPTION"]);
 		startButton.setMouseUp(&onStartMouseUp, ev);
 		startButton.setMouseDown(&onStartMouseDown, ev);
 		backdrop.layer = 2;
 		startButton.layer = 1;
+		caption.layer = 1;
 		gr.add(backdrop);
 		gr.add(startButton);
+		gr.add(caption);
 		while (!ev.start)
 		{
 			if (s)
@@ -165,17 +178,16 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &ga
 						_blocks[i]->setFlip(SDL_FLIP_VERTICAL);
 						break;
 					case 'E' :
-						_blocks[i]->setRotation(90.0F);
-					case 'W' :
 						_blocks[i]->setRotation(-90.0F);
 						break;
-
+					case 'W' :
+						_blocks[i]->setRotation(90.0F);
+						break;
 				}
 				_blocks[i]->draw(_ren);
 			}
 			else
 			{
-
 				_blocks[i]->setTexture(nullptr);
 			}
 		}
@@ -296,6 +308,7 @@ void			NibblerGUI::setSize(int x, int y)
 	floor.resize(_blockSize * _x, _blockSize * _y);
 	floor.active = true;
 	floor.visible = true;
+
 	for (unsigned int i = 0; i < _y; i++ )
 	{
 		int ty = i * _blockSize + 5;

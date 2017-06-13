@@ -33,7 +33,7 @@ IGUI	*loadLibObject(void *handle)
 	return (guiObject);
 }
 
-void	libSwitch(int libID, IGUI *&curLib)
+void	libSwitch(int libID, IGUI *&curLib, void **curhandle)
 {
 	try
 	{
@@ -48,6 +48,8 @@ void	libSwitch(int libID, IGUI *&curLib)
 				newLib->init();
 				newLib->setSize(curLib->getX(), curLib->getY());
 				delete(curLib);
+				dlclose(*curhandle);
+				*curhandle = handle;
 				curLib = newLib;
 				break;
 			}
@@ -59,6 +61,8 @@ void	libSwitch(int libID, IGUI *&curLib)
 				newLib->init();
 				newLib->setSize(curLib->getX(), curLib->getY());
 				delete(curLib);
+				dlclose(*curhandle);
+				*curhandle = handle;
 				curLib = newLib;
 				break;
 			}
@@ -132,7 +136,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
         else if (started)
 			guiLib->getInput(keys);
 		if (keys.libswitch > 0)
-			libSwitch(keys.libswitch, guiLib);
+			libSwitch(keys.libswitch, guiLib, &handle);
         if (keys.quit > 0)
 			is_running = false;
         if (keys.pause > 0)
