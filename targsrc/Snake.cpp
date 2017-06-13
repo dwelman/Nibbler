@@ -239,10 +239,6 @@ std::vector<DrawableObj> Snake::GetSnakeDrawableObjects()
         {
             temp.dir = 'N';
         }
-        else if ((*iter).GetSegmentDirection() == SnakeSegment::EAST)
-        {
-            temp.dir = 'E';
-        }
         else if ((*iter).GetSegmentDirection() == SnakeSegment::SOUTH)
         {
             temp.dir = 'S';
@@ -250,6 +246,10 @@ std::vector<DrawableObj> Snake::GetSnakeDrawableObjects()
         else if ((*iter).GetSegmentDirection() == SnakeSegment::WEST)
         {
             temp.dir = 'W';
+        }
+        else
+        {
+            temp.dir = 'E';
         }
 		ret.push_back(temp);
 	}

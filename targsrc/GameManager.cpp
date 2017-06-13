@@ -54,6 +54,8 @@ Snake *GameManager::GetSnake()
 void GameManager::spawnFood()
 {
     int amount = rand() % 5 + 1;
+    std::vector<int>    xpos;
+    std::vector<int>    ypos;
     for (int i = 0; i < amount; i++)
     {
         std::vector<int> xCoords = snake->GetAllX();
@@ -64,6 +66,10 @@ void GameManager::spawnFood()
         {
             x = rand() % mapWidth;
             y = rand() % mapHeight;
+            if (std::find(xpos.begin(), xpos.end(), x) != xpos.end() || std::find(ypos.begin(), ypos.end(), y) != ypos.end())
+            {
+                continue;
+            }
         }
         while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
         if (rand() % 100 >= 30)
@@ -81,6 +87,8 @@ void GameManager::spawnFood()
                 food.push_back(factory.CreateFood("SUPER_FOOD", x, y));
             }
         }
+        xpos.push_back(x);
+        ypos.push_back(y);
         foodCounter++;
     }
 }
@@ -101,6 +109,7 @@ void GameManager::checkFoodCollision()
 	}
     for (int i = 0; i < toRemove.size(); i++)
     {
+        delete food[toRemove[i]];
         food.erase(food.begin() + toRemove[i]);
         --foodCounter;
     }

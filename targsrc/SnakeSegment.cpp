@@ -56,7 +56,7 @@ void SnakeSegment::Move()
         {
             x -= 1;
         }
-        else
+        else if (direction == WEST)
         {
             x += 1;
         }
