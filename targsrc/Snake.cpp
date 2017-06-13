@@ -235,6 +235,22 @@ std::vector<DrawableObj> Snake::GetSnakeDrawableObjects()
         {
             temp.type = "TAIL";
         }
+        if ((*iter).GetSegmentDirection() == SnakeSegment::NORTH)
+        {
+            temp.dir = 'N';
+        }
+        else if ((*iter).GetSegmentDirection() == SnakeSegment::EAST)
+        {
+            temp.dir = 'E';
+        }
+        else if ((*iter).GetSegmentDirection() == SnakeSegment::SOUTH)
+        {
+            temp.dir = 'S';
+        }
+        else if ((*iter).GetSegmentDirection() == SnakeSegment::WEST)
+        {
+            temp.dir = 'W';
+        }
 		ret.push_back(temp);
 	}
 	return (ret);

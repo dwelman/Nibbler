@@ -125,6 +125,7 @@ std::vector<DrawableObj> GameManager::GetDrawableObjects()
         temp.x = (*iter)->getX();
         temp.y = (*iter)->getY();
         temp.type = (*iter)->GetType();
+        temp.type = 'N';
         ret.push_back(temp);
     }
     auto snakeTemp = snake->GetSnakeDrawableObjects();

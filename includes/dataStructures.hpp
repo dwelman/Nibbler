@@ -13,6 +13,7 @@ struct DrawableObj
 	unsigned int 		x;
 	unsigned int 		y;
 	int 				layer;
+    char                dir;
 };
 
 struct s_keypress
