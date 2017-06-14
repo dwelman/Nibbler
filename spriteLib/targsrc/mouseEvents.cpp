@@ -17,3 +17,20 @@ void 		onStartMouseDown(void *d, UIElement *btn)
 	d = nullptr;
 	btn->setTexture(LoadImage("resources/sprites/play_button_clicked.png", e->ren));
 }
+
+
+void 		onStartMouseMove(void *d, UIElement *btn)
+{
+	int rx, ry;
+
+	if (*reinterpret_cast<int*>(d) > 0)
+	{
+		rx = btn->posX();
+		ry = abs(rand()) % YRES;
+		ry = (ry + btn->height() > YRES) ? YRES - btn->height() : ry; //- btn->height();
+		rx = abs(rand()) % XRES;// - btn->width();
+		rx = (rx + btn->width() > XRES) ? XRES - btn->width() : rx; //- btn->height();
+		*reinterpret_cast<int *>(d) = *reinterpret_cast<int *>(d) - 1;
+		btn->move(rx, ry);
+	}
+}

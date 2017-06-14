@@ -7,8 +7,7 @@
 
 #include <libIncludes.hpp>
 
-#define YRES 720
-#define XRES 1024
+
 #define SDL_SetRenderDrawColorRGB(R, C) SDL_SetRenderDrawColor(R, C.r, C.g, C.b, C.a)
 
 

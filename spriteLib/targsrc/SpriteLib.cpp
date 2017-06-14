@@ -54,6 +54,8 @@ void			SpriteLib::init()
 	_texmap[std::string("PLAY")] = LoadImage("resources/sprites/play_button.png", _ren);
 	_texmap[std::string("JUNGLE")] = LoadImage("resources/sprites/jungle.png", _ren);
 	_texmap[std::string("CAPTION")] = LoadImage("resources/sprites/snek.png", _ren);
+	_texmap[std::string("TROLL")] = LoadImage("resources/sprites/Trollface.png", _ren);
+	_texmap[std::string("TROLLX")] = LoadImage("resources/sprites/TrollExtreme.jpg", _ren);
 
 }
 
@@ -64,8 +66,9 @@ int	SpriteLib::start(StartConfig &config)
 		SDL_RenderClear(_ren);
 		UIElement		startButton(XRES / 2 - 150, YRES / 2 - 100, 300, 200);
 		UIElement		backdrop(0, 0 ,XRES, YRES);
-		UIElement		caption(XRES / 2 - 250, YRES / 4 - 100, 500, 200);;
-
+		UIElement		caption(XRES / 2 - 250, YRES / 4 - 100, 500, 200);
+		UIElement		trollpng(5 , 5, 200, 180);
+		int 			troll = 7;
 		UIGroup			gr;
 		SDL_Event		event;
 		int				s = 0;
@@ -79,12 +82,15 @@ int	SpriteLib::start(StartConfig &config)
 		caption.setTexture(_texmap["CAPTION"]);
 		startButton.setMouseUp(&onStartMouseUp, ev);
 		startButton.setMouseDown(&onStartMouseDown, ev);
+		startButton.setMouseMove(&onStartMouseMove, troll);
 		backdrop.layer = 2;
 		startButton.layer = 1;
 		caption.layer = 1;
+		trollpng.layer = 1;
 		gr.add(backdrop);
 		gr.add(startButton);
 		gr.add(caption);
+		gr.add(trollpng);
 		while (!ev.start)
 		{
 			if (s)
@@ -92,6 +98,19 @@ int	SpriteLib::start(StartConfig &config)
 				s--;
 				if (!s)
 					ev.start = 1;
+			}
+			switch (troll)
+			{
+				case 7:
+					trollpng.visible = false;
+					break;
+				case 5:
+					trollpng.visible = true;
+					trollpng.setTexture(_texmap["TROLL"]);
+					break;
+				case 2:
+					trollpng.setTexture(_texmap["TROLLX"]);
+					break;
 			}
 			SDL_RenderClear(_ren);
 			gr.draw(_ren);
