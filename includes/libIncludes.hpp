@@ -16,6 +16,8 @@
 #include <sstream>
 #define YRES 720
 #define XRES 1024
+#define RESTART 2
+#define QUIT 1
 
 void 		onStartMouseUp(void *d, UIElement *btn);
 void 		onStartMouseDown(void *d, UIElement *btn);

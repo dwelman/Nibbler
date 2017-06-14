@@ -99,6 +99,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
     StartConfig						config;
     GameData						gameData;
     bool							started = false;
+    int 							end = 0;
 
     gameData.highScore = GameManager::Instance().highScore;
 	handle = getHandle(startingLib.c_str());
@@ -154,6 +155,10 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 			is_running = false;
         if (keys.pause > 0)
             isPaused = !isPaused;
+		if (GameManager::Instance().GetSnake()->IsDead())
+			guiLib->end(end);
+		if (end == 1)
+			is_running = false;
 	}
 	if (handle)
 		dlclose(handle);
@@ -236,7 +241,6 @@ int main(int argc, char **argv)
         {
             highScore = GameManager::Instance().GetSnake()->GetScore();
         }
-
         std::ofstream   oFile("highscore");
         oFile << highScore;
 	}

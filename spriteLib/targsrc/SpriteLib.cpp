@@ -43,7 +43,7 @@ void			SpriteLib::init()
 		SDL_DestroyWindow(_window);
 		throw SDLFailed(SDL_GetError());
 	}
-	nokia14 = TTF_OpenFont("resources/ComicSans.ttf", 14);
+	nokia14 = TTF_OpenFont("resources/ComicSans.ttf", 32);
 	_texmap[std::string("HEAD")] = LoadImage("resources/sprites/snake_head.png", _ren);
 	_texmap[std::string("TAIL")] = LoadImage("resources/sprites/snake_tail.png", _ren);
 	_texmap[std::string("BODY")] = LoadImage("resources/sprites/snake_body.png", _ren);
@@ -99,6 +99,8 @@ int	SpriteLib::start(StartConfig &config)
 				if (!s)
 					ev.start = 1;
 			}
+			if (troll < 5)
+				trollpng.rot += 5;
 			switch (troll)
 			{
 				case 7:
@@ -361,4 +363,46 @@ void			SpriteLib::passWindow(IGUI *lib)
 	lib->setWindow(reinterpret_cast<void*>(_window));
 	lib->setRenderer(reinterpret_cast<void*>(_ren));
 	clean = false;
+}
+
+void			SpriteLib::end(int &end)
+	{
+	if (_ren && _window)
+	{
+		end = 0;
+		UIElement	message(XRES / 2 - 250, YRES / 2 - 100, 500, 100);
+		message.setColor(120, 120, 120, 255 );
+		SDL_Event	event;
+
+		message.setText(_ren ,"Press Enter to restart, any other key to quit", nokia14, createColor(176, 196, 182, 255));
+		while (!end)
+		{
+			SDL_RenderClear(_ren);
+			while (SDL_PollEvent(&event))
+			{
+				message.checkEvent(event);
+				if  (event.type == SDL_QUIT)
+				{
+					exit(1);
+				}
+				if  (event.type == SDL_KEYDOWN)
+				{
+					switch (event.key.keysym.scancode)
+					{
+						case SDL_SCANCODE_RETURN:
+							end = RESTART;
+							break;
+						default:
+							end = QUIT;
+					}
+				}
+				if  (event.type == SDL_QUIT)
+				{
+					end = QUIT;
+				}
+			}
+			message.draw(_ren);
+			SDL_RenderPresent(_ren);
+		}
+	}
 }
