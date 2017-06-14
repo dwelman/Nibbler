@@ -12,7 +12,7 @@ public:
 	Food();
     Food(int _x, int _y, int _val, int _score, int _speedChange);
 	Food(Food const &f);
-	~Food();
+	virtual ~Food();
 
 	Food	&operator=(Food const &f);
 
