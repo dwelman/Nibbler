@@ -35,14 +35,20 @@ void GameManager::Update()
 {
 	if (SDL_GetTicks() - updateTick > snake->GetSpeed())
     {
+        std::cout << "1" << std::endl;
         if (foodCounter == 0)
         {
             spawnFood();
         }
+        std::cout << "2" << std::endl;
         snake->UpdateSnake();
+        std::cout << "3" << std::endl;
         checkFoodCollision();
+        std::cout << "4" << std::endl;
         checkWallCollision();
+        std::cout << "5" << std::endl;
         updateTick = SDL_GetTicks();
+        std::cout << "6" << std::endl;
     }
 }
 
@@ -66,12 +72,9 @@ void GameManager::spawnFood()
         {
             x = rand() % mapWidth;
             y = rand() % mapHeight;
-            if (std::find(xpos.begin(), xpos.end(), x) != xpos.end() || std::find(ypos.begin(), ypos.end(), y) != ypos.end())
-            {
-                continue;
-            }
         }
-        while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end());
+        while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end()
+                || (std::find(xpos.begin(), xpos.end(), x) != xpos.end() && std::find(ypos.begin(), ypos.end(), y) != ypos.end()));
         if (rand() % 100 >= 30)
         {
             food.push_back(factory.CreateFood("BASIC_FOOD", x, y));
@@ -95,9 +98,11 @@ void GameManager::spawnFood()
 
 void GameManager::checkFoodCollision()
 {
-    try {
+    try
+    {
         std::vector<int> toRemove;
-        for (int i = 0; i < food.size(); i++) {
+        for (int i = 0; i < food.size(); i++)
+        {
             Entity *temp = food[i];
             if (temp != NULL) {
                 if (temp->getX() == snake->GetHead().getX() && temp->getY() == snake->GetHead().getY()) {
@@ -106,7 +111,8 @@ void GameManager::checkFoodCollision()
                 }
             }
         }
-        for (int i = 0; i < toRemove.size(); i++) {
+        for (int i = 0; i < toRemove.size(); i++)
+        {
             delete food[toRemove[i]];
             food.erase(food.begin() + toRemove[i]);
             --foodCounter;
