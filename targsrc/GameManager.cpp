@@ -37,20 +37,14 @@ void GameManager::Update()
 {
 	if ((int)SDL_GetTicks() - updateTick > snake->GetSpeed())
     {
-        std::cout << "1" << std::endl;
         if (foodCounter == 0)
         {
             spawnFood();
         }
-        std::cout << "2" << std::endl;
         snake->UpdateSnake();
-        std::cout << "3" << std::endl;
         checkFoodCollision();
-        std::cout << "4" << std::endl;
         checkWallCollision();
-        std::cout << "5" << std::endl;
         updateTick = SDL_GetTicks();
-        std::cout << "6" << std::endl;
     }
 }
 
