@@ -66,6 +66,19 @@ void	libSwitch(int libID, IGUI *&curLib, void **curhandle)
 				curLib = newLib;
 				break;
 			}
+            case 3:
+            {
+                handle = getHandle("libSpaceLib.dylib");
+                IGUI *newLib = loadLibObject(handle);
+                curLib->passWindow(newLib);
+                newLib->init();
+                newLib->setSize(curLib->getX(), curLib->getY());
+                delete(curLib);
+                dlclose(*curhandle);
+                *curhandle = handle;
+                curLib = newLib;
+                break;
+            }
 		}
 	}
 	catch (std::exception &e)

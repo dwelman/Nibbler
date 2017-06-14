@@ -48,3 +48,4 @@ set(BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(basicLib)
 add_subdirectory(spriteLib)
+add_subdirectory(spaceShip)
