@@ -3,7 +3,7 @@ project(nibbler)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_CXX_FLAGS )
+set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -Wno-unused")
 list(APPEND CMAKE_SYSTEM_PREFIX_PATH ~/.brew/lib)
 SET(CMAKE_BUILD_TYPE Debug)
 find_path(BREW_LIB ~/.brew/lib)

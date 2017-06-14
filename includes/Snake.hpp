@@ -37,14 +37,14 @@ public:
     int                         GetPlayerNumber() const;
 private:
 	Snake();
-	std::vector<SnakeSegment>	snake;
+	int                         playerNum;
 	int							stomachSize;
 	bool						isDying;
     bool                        canTurn;
 	int							score;
     int                         speed;
     int                         maxSpeed;
-    int                         playerNum;
+	std::vector<SnakeSegment>	snake;
 
 	void						updateSnakeSegments();
 	void						moveSnake();

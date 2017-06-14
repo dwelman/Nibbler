@@ -6,8 +6,10 @@
 #include "ShrinkFood.hpp"
 #include "SuperFood.hpp"
 
-GameManager::GameManager() : foodCounter(0), snake(nullptr)
+GameManager::GameManager()
 {
+    foodCounter = 0;
+    snake = nullptr;
 	updateTick = SDL_GetTicks();
     factory.LearnFood(new BasicFood());
     factory.LearnFood(new ShrinkFood());
@@ -33,7 +35,7 @@ void GameManager::GiveSnake(Snake const & _snake)
 
 void GameManager::Update()
 {
-	if (SDL_GetTicks() - updateTick > snake->GetSpeed())
+	if ((int)SDL_GetTicks() - updateTick > snake->GetSpeed())
     {
         std::cout << "1" << std::endl;
         if (foodCounter == 0)
@@ -73,7 +75,7 @@ void GameManager::spawnFood()
             x = rand() % mapWidth;
             y = rand() % mapHeight;
         }
-        while (std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end()
+        while ((std::find(xCoords.begin(), xCoords.end(), x) != xCoords.end() && std::find(yCoords.begin(), yCoords.end(), y) != yCoords.end())
                 || (std::find(xpos.begin(), xpos.end(), x) != xpos.end() && std::find(ypos.begin(), ypos.end(), y) != ypos.end()));
         if (rand() % 100 >= 30)
         {
@@ -100,8 +102,8 @@ void GameManager::checkFoodCollision()
 {
     try
     {
-        std::vector<int> toRemove;
-        for (int i = 0; i < food.size(); i++)
+        std::vector<unsigned int> toRemove;
+        for (unsigned int i = 0; i < food.size(); i++)
         {
             Entity *temp = food[i];
             if (temp != NULL) {
@@ -111,7 +113,7 @@ void GameManager::checkFoodCollision()
                 }
             }
         }
-        for (int i = 0; i < toRemove.size(); i++)
+        for (unsigned int i = 0; i < toRemove.size(); i++)
         {
             delete food[toRemove[i]];
             food.erase(food.begin() + toRemove[i]);
