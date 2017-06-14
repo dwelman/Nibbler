@@ -41,6 +41,7 @@ public:
 	void			setRenderer(void *ren);
 	int 			getX();
 	int 			getY();
+	void			end(int &end);
 
 	class SDLFailed : public std::exception
 	{

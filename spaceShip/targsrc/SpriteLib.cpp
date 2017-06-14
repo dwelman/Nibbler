@@ -362,3 +362,38 @@ void			SpriteLib::passWindow(IGUI *lib)
 	lib->setRenderer(reinterpret_cast<void*>(_ren));
 	clean = false;
 }
+
+void			SpriteLib::end(int &end)
+{
+	if (_ren && _window)
+	{
+		end = 0;
+		SDL_RenderClear(_ren);
+		UIElement	message;
+		SDL_Event	event;
+
+		while (!end)
+		{
+			while (SDL_PollEvent(&event))
+			{
+				message.checkEvent(event);
+				if  (event.type == SDL_QUIT)
+				{
+					exit(1);
+				}
+				if  (event.type == SDL_KEYDOWN)
+				{
+					switch (event.key.keysym.sym)
+					{
+						case SDLK_y:
+							end = RESTART;
+						default:
+							end = QUIT;
+					}
+				}
+				message.draw(_ren);
+			}
+			SDL_RenderPresent(_ren);
+		}
+	}
+}
