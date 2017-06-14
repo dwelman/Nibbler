@@ -228,7 +228,14 @@ int main(int argc, char **argv)
         {
             std::string temp;
             getline(iFile, temp);
-            highScore = std::stoi(temp);
+            try
+            {
+                highScore = std::stoi(temp);
+            }
+            catch (...)
+            {
+                highScore = 0;
+            }
             iFile.close();
         }
         else

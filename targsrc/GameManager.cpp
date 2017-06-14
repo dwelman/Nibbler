@@ -42,8 +42,8 @@ void GameManager::Update()
             spawnFood();
         }
         snake->UpdateSnake();
-        checkFoodCollision();
         checkWallCollision();
+        checkFoodCollision();
         updateTick = SDL_GetTicks();
     }
 }
