@@ -95,23 +95,26 @@ void GameManager::spawnFood()
 
 void GameManager::checkFoodCollision()
 {
-    std::vector<int>    toRemove;
-	for (int i = 0; i < food.size(); i++)
-	{
-		Entity *temp = food[i];
-        if (temp != NULL)
-        {
-            if (temp->getX() == snake->GetHead().getX() && temp->getY() == snake->GetHead().getY()) {
-                snake->Eat(*food[i]);
-                toRemove.push_back(i);
+    try {
+        std::vector<int> toRemove;
+        for (int i = 0; i < food.size(); i++) {
+            Entity *temp = food[i];
+            if (temp != NULL) {
+                if (temp->getX() == snake->GetHead().getX() && temp->getY() == snake->GetHead().getY()) {
+                    snake->Eat(*food[i]);
+                    toRemove.push_back(i);
+                }
             }
         }
-	}
-    for (int i = 0; i < toRemove.size(); i++)
+        for (int i = 0; i < toRemove.size(); i++) {
+            delete food[toRemove[i]];
+            food.erase(food.begin() + toRemove[i]);
+            --foodCounter;
+        }
+    }
+    catch (std::exception &e)
     {
-        delete food[toRemove[i]];
-        food.erase(food.begin() + toRemove[i]);
-        --foodCounter;
+        std::cout << e.what() << std::endl;
     }
 }
 
