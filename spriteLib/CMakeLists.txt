@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra" )
 set(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_BUILD_TYPE Debug)
 
-include_directories(BasicRender ~/.brew/include/)
+include_directories(SpriteRender ~/.brew/include/)
 
 list(APPEND CMAKE_SYSTEM_PREFIX_PATH ~/.brew/lib)
 
@@ -18,7 +18,7 @@ MARK_AS_ADVANCED (SDL_LIBRARY)
 
 SET(EXTRA_LIBS ${SDL_LIBRARY} ${SDL_TTF_LIBRARY} ${SDL_IMAGE_LIBRARY})
 
-set(SOURCE_FILES    targsrc/NibblerGUI.cpp
+set(SOURCE_FILES    targsrc/SpriteLib.cpp
                     targsrc/factory.cpp
                     targsrc/UIElement.cpp
                     targsrc/UIGroup.cpp
@@ -27,8 +27,7 @@ set(SOURCE_FILES    targsrc/NibblerGUI.cpp
 
 set(INCLUDE "./include/")
 
-
-set(HEADERS ${INCLUDE}NibblerGUI.hpp)
+set(HEADERS ${INCLUDE}SpriteLib.hpp)
 
 include_directories(include ../includes)
 

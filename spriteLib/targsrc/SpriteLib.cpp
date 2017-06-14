@@ -2,9 +2,9 @@
 // Created by Dean DU TOIT on 2017/06/06.
 //
 
-#include <NibblerGUI.hpp>
+#include <SpriteLib.hpp>
 
-NibblerGUI::NibblerGUI() : _window(nullptr), _ren(nullptr), _x(50), _y(50), _blockSize(5),
+SpriteLib::SpriteLib() : _window(nullptr), _ren(nullptr), _x(50), _y(50), _blockSize(5),
 	clean(true)
 
 {
@@ -13,7 +13,7 @@ NibblerGUI::NibblerGUI() : _window(nullptr), _ren(nullptr), _x(50), _y(50), _blo
 	TTF_Init();
 }
 
-NibblerGUI::~NibblerGUI()
+SpriteLib::~SpriteLib()
 {
 	if (clean)
 	{
@@ -27,7 +27,7 @@ NibblerGUI::~NibblerGUI()
 		SDL_DestroyTexture((*it).second);
 }
 
-void			NibblerGUI::init()
+void			SpriteLib::init()
 {
 	if (_window == nullptr)
 	{
@@ -57,7 +57,7 @@ void			NibblerGUI::init()
 
 }
 
-int	NibblerGUI::start(StartConfig &config)
+int	SpriteLib::start(StartConfig &config)
 {
 	config.gameMode = 0;
 	{
@@ -129,12 +129,12 @@ int	NibblerGUI::start(StartConfig &config)
 	return 0;
 }
 
-NibblerGUI::NibblerGUI(const NibblerGUI &src)
+SpriteLib::SpriteLib(const SpriteLib &src)
 {
 	*this = src;
 }
 
-NibblerGUI 		&NibblerGUI::operator=(NibblerGUI const & src)
+SpriteLib 		&SpriteLib::operator=(SpriteLib const & src)
 {
 	_window = src._window;
 	_ren = src._ren;
@@ -145,7 +145,7 @@ NibblerGUI 		&NibblerGUI::operator=(NibblerGUI const & src)
 	return (*this);
 }
 
-void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &gameData)
+void 	SpriteLib::drawObjects(const std::vector<DrawableObj> &obj, GameData  &gameData)
 {
 	SDL_Color	col;
 	SDL_RenderClear(_ren);
@@ -195,11 +195,11 @@ void 	NibblerGUI::drawObjects(const std::vector<DrawableObj> &obj, GameData  &ga
 	SDL_RenderPresent(_ren);
 }
 
-NibblerGUI::SDLFailed::SDLFailed(const char *err) : _err(err)
+SpriteLib::SDLFailed::SDLFailed(const char *err) : _err(err)
 {
 }
 
-const char *NibblerGUI::SDLFailed::what() const throw()
+const char *SpriteLib::SDLFailed::what() const throw()
 {
 	std::string			_lastErr;
 
@@ -209,7 +209,7 @@ const char *NibblerGUI::SDLFailed::what() const throw()
 	return (_lastErr.c_str());
 }
 
-int			NibblerGUI::getInput(s_keypress &keys)
+int			SpriteLib::getInput(s_keypress &keys)
 {
 	SDL_Event	event;
 
@@ -292,7 +292,7 @@ int			NibblerGUI::getInput(s_keypress &keys)
 	return (keys.p1north + keys.p1south + keys.p1east + keys.p1west);
 }
 
-void			NibblerGUI::setSize(int x, int y)
+void			SpriteLib::setSize(int x, int y)
 {
 	_x = x;
 	_y = y;
@@ -319,25 +319,25 @@ void			NibblerGUI::setSize(int x, int y)
 		}
 	}
 }
-void			NibblerGUI::setWindow(void *win)
+void			SpriteLib::setWindow(void *win)
 {
 	_window = reinterpret_cast<SDL_Window*>(win);
 }
-void			NibblerGUI::setRenderer(void *ren)
+void			SpriteLib::setRenderer(void *ren)
 {
 	_ren = reinterpret_cast<SDL_Renderer*>(ren);
 }
 
-int 			NibblerGUI::getX()
+int 			SpriteLib::getX()
 {
 	return(_x);
 }
-int 			NibblerGUI::getY()
+int 			SpriteLib::getY()
 {
 	return(_y);
 }
 
-void			NibblerGUI::passWindow(IGUI *lib)
+void			SpriteLib::passWindow(IGUI *lib)
 {
 	lib->setWindow(reinterpret_cast<void*>(_window));
 	lib->setRenderer(reinterpret_cast<void*>(_ren));

@@ -12,7 +12,7 @@
 #define SDL_SetRenderDrawColorRGB(R, C) SDL_SetRenderDrawColor(R, C.r, C.g, C.b, C.a)
 
 
-class NibblerGUI : public IGUI
+class SpriteLib : public IGUI
 {
 private:
 	SDL_Window							*_window;
@@ -26,11 +26,11 @@ private:
 	TTF_Font							*nokia14;
 	UIElement							floor;
 public:
-	NibblerGUI();
-	~NibblerGUI();
-	NibblerGUI(const NibblerGUI &src);
+	SpriteLib();
+	~SpriteLib();
+	SpriteLib(const SpriteLib &src);
 
-	NibblerGUI 		&operator=(NibblerGUI const & src);
+	SpriteLib 		&operator=(SpriteLib const & src);
 	void			init();
 	int				start(StartConfig &startConf);
 	void 			drawObjects(const std::vector<DrawableObj> &obj, GameData  &gameData);

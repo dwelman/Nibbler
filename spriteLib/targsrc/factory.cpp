@@ -3,11 +3,12 @@
 //
 
 #include <string>
-#include "NibblerGUI.hpp"
+#include "SpriteLib.hpp"
+
 extern "C"
 {
 	IGUI *make()
 	{
-		return (new NibblerGUI());
+		return (new SpriteLib());
 	}
 }
