@@ -47,6 +47,12 @@ add_custom_target(re make clean
 COMMAND make
 )
 
+add_custom_target(fclean make clean
+		COMMAND rm -f nibbler libBasicRender.dylib libSpaceLib.dylib libSpriteRender.dylib
+		)
+
+add_custom_target(cmakeclean rm -rf CMakeFiles CMakeCache.txt cmake_install.cmake)
+
 set(CALLED_FROM_PARENT true)
 set(BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
