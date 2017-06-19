@@ -26,8 +26,8 @@ NibblerGUI::~NibblerGUI()
 		if (_window != nullptr)
 			SDL_DestroyWindow(_window);
 		SDL_Quit();
-		TTF_CloseFont(nokia14);
 	}
+	TTF_CloseFont(nokia14);
 }
 
 
@@ -47,24 +47,31 @@ void			NibblerGUI::init()
 		SDL_DestroyWindow(_window);
 		throw SDLFailed(SDL_GetError());
 	}
-	nokia14 = TTF_OpenFont("resources/nokiafc22.ttf", 14);
+	nokia14 = TTF_OpenFont("resources/nokiafc22.ttf", 72);
 }
 
 int	NibblerGUI::start(StartConfig &config)
 {
 	config.gameMode = 0;
-
 	{
 		UIElement	startButton(XRES / 2 - 100, YRES / 2 - 50, 200, 40);
+		UIElement	caption(XRES / 2 - 200, YRES / 2 - 200, 400, 80);
 		SDL_Event	event;
 		int 		start = 0;
 		int			s = 0;
 		TTF_Font	*font = TTF_OpenFont("resources/nokiafc22.ttf", 12);
+		TTF_Font	*large = TTF_OpenFont("resources/nokiafc22.ttf", 50);
+
 
 		startButton.setColor(100,100, 100, 100);
+		caption.setColor(100,100, 100, 100);
 		if (font)
 		{
 			startButton.setText(_ren, "Start" , font, {176, 196, 182, 255});
+		}
+		if (large)
+		{
+			caption.setText(_ren, "NIBBLER" , large, {176, 196, 182, 255});
 		}
 		startButton.setMouseUp(&onStartMouseUp, start);
 		startButton.setMouseDown(&onStartMouseDown, start);
@@ -78,6 +85,7 @@ int	NibblerGUI::start(StartConfig &config)
 			}
 			SDL_RenderClear(_ren);
 			startButton.draw(_ren);
+			caption.draw(_ren);
 			while (SDL_PollEvent(&event))
 			{
 				startButton.checkEvent(event);
@@ -317,12 +325,14 @@ void			NibblerGUI::end(int &end)
 	if (_ren && _window)
 	{
 		end = 0;
-		SDL_RenderClear(_ren);
-		UIElement	message;
+		UIElement	message(XRES / 2 - 300, YRES / 2 - 100, 600, 100);
+		message.setColor(120, 120, 120, 255 );
 		SDL_Event	event;
 
+		message.setText(_ren ,"Press Enter to restart, any other key to quit", nokia14, createColor(176, 196, 182, 255));
 		while (!end)
 		{
+			SDL_RenderClear(_ren);
 			while (SDL_PollEvent(&event))
 			{
 				message.checkEvent(event);
@@ -332,16 +342,21 @@ void			NibblerGUI::end(int &end)
 				}
 				if  (event.type == SDL_KEYDOWN)
 				{
-					switch (event.key.keysym.sym)
+					switch (event.key.keysym.scancode)
 					{
-						case SDLK_y:
+						case SDL_SCANCODE_RETURN:
 							end = RESTART;
+							break;
 						default:
 							end = QUIT;
 					}
 				}
-				message.draw(_ren);
+				if  (event.type == SDL_QUIT)
+				{
+					end = QUIT;
+				}
 			}
+			message.draw(_ren);
 			SDL_RenderPresent(_ren);
 		}
 	}

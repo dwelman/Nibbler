@@ -35,7 +35,7 @@ void GameManager::GiveSnake(Snake const & _snake)
 
 void GameManager::Update()
 {
-	if ((int)SDL_GetTicks() - updateTick > snake->GetSpeed())
+	if (SDL_GetTicks() - updateTick > static_cast<Uint32>(snake->GetSpeed()))
     {
         if (foodCounter == 0)
         {
@@ -155,4 +155,14 @@ void GameManager::SetMapWidth(int width)
 void GameManager::SetMapHeight(int height)
 {
     mapHeight = height;
+}
+
+int							GameManager::GetMapWidth()
+{
+    return mapHeight;
+}
+
+int							GameManager::GetMapHeight()
+{
+    return mapWidth;
 }

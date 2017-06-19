@@ -226,8 +226,8 @@ void			UIElement::setTexture(SDL_Texture *_texture)
 
 void				UIElement::setText(SDL_Renderer * ren, const char *text, TTF_Font *font, SDL_Color col)
 {
-	if (textTexture)
-		SDL_DestroyTexture(textTexture);
+//	if (textTexture)
+//		SDL_DestroyTexture(textTexture);
 	SDL_Surface *text_surface = TTF_RenderText_Solid(font ,text, col);
 	textTexture = SDL_CreateTextureFromSurface(ren, text_surface);
 	SDL_FreeSurface(text_surface);

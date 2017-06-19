@@ -32,6 +32,7 @@ Snake & Snake::operator=(Snake const & s)
 	this->stomachSize = s.stomachSize;
 	this->score = s.score;
     this->speed = s.speed;
+    this->maxSpeed = s.maxSpeed;
 	return (*this);
 }
 

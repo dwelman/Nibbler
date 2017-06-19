@@ -25,6 +25,8 @@ SpriteLib::~SpriteLib()
 	}
 	for (auto it = _texmap.begin(); it != _texmap.end(); it++)
 		SDL_DestroyTexture((*it).second);
+	for (auto it = _blocks.begin(); it != _blocks.end(); it++)
+		delete(*it);
 }
 
 void			SpriteLib::init()
@@ -52,6 +54,7 @@ void			SpriteLib::init()
 	_texmap[std::string("SUPER_FOOD")] = LoadImage("resources/sprites/B.png", _ren);
 	_texmap[std::string("FLOOR")] = LoadImage("resources/sprites/whitefloor.jpg", _ren);
 	_texmap[std::string("PLAY")] = LoadImage("resources/sprites/play_button.png", _ren);
+	_texmap[std::string("PLAY_PRESS")] = LoadImage("resources/sprites/play_button_clicked.png", _ren);
 	_texmap[std::string("JUNGLE")] = LoadImage("resources/sprites/jungle.png", _ren);
 	_texmap[std::string("CAPTION")] = LoadImage("resources/sprites/snek.png", _ren);
 	_texmap[std::string("TROLL")] = LoadImage("resources/sprites/Trollface.png", _ren);
@@ -77,6 +80,7 @@ int	SpriteLib::start(StartConfig &config)
 		startButton.setColor(100,100, 100, 100);
 		ev.ren = _ren;
 		ev.start = 0;
+		ev.texmap = &_texmap;
 		startButton.setTexture(_texmap["PLAY"]);
 		backdrop.setTexture(_texmap["JUNGLE"]);
 		caption.setTexture(_texmap["CAPTION"]);
@@ -366,7 +370,7 @@ void			SpriteLib::passWindow(IGUI *lib)
 }
 
 void			SpriteLib::end(int &end)
-	{
+{
 	if (_ren && _window)
 	{
 		end = 0;

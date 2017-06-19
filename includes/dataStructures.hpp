@@ -35,7 +35,8 @@ struct StartConfig
 struct EventContainer
 {
 	int start;
-	SDL_Renderer	*ren;
+	SDL_Renderer						*ren;
+	std::map<std::string, SDL_Texture*>	*texmap;
 };
 
 struct GameData

@@ -25,6 +25,8 @@ SpriteLib::~SpriteLib()
 	}
 	for (auto it = _texmap.begin(); it != _texmap.end(); it++)
 		SDL_DestroyTexture((*it).second);
+	for (auto it = _blocks.begin(); it != _blocks.end(); it++)
+		delete(*it);
 }
 
 void			SpriteLib::init()
@@ -43,7 +45,7 @@ void			SpriteLib::init()
 		SDL_DestroyWindow(_window);
 		throw SDLFailed(SDL_GetError());
 	}
-	nokia14 = TTF_OpenFont("resources/ComicSans.ttf", 14);
+	nokia14 = TTF_OpenFont("resources/MandroidBB.ttf", 120);
 	_texmap[std::string("HEAD")] = LoadImage("resources/sprites/ship.png", _ren);
 	_texmap[std::string("TAIL")] = LoadImage("resources/sprites/trail.png", _ren);
 	_texmap[std::string("BODY")] = LoadImage("resources/sprites/trail.png", _ren);
@@ -51,12 +53,16 @@ void			SpriteLib::init()
 	_texmap[std::string("SHRINK_FOOD")] = LoadImage("resources/sprites/red_energy.png", _ren);
 	_texmap[std::string("SUPER_FOOD")] = LoadImage("resources/sprites/blue_energy.png", _ren);
 	_texmap[std::string("FLOOR")] = LoadImage("resources/sprites/stars.jpg", _ren);
+	_texmap[std::string("BORDER")] = LoadImage("resources/sprites/border.png", _ren);
+	_texmap[std::string("BACKDROP")] = LoadImage("resources/sprites/stars.jpg", _ren);
 	_texmap[std::string("PLAY")] = LoadImage("resources/sprites/space_play.png", _ren);
+	_texmap[std::string("PLAY_PRESS")] = LoadImage("resources/sprites/space_play_pressed.png", _ren);
 	_texmap[std::string("JUNGLE")] = LoadImage("resources/sprites/stars.jpg", _ren);
-	_texmap[std::string("CAPTION")] = LoadImage("resources/sprites/snek.png", _ren);
+	_texmap[std::string("CAPTION")] = LoadImage("resources/sprites/space_nibbler.png", _ren);
 	_texmap[std::string("TROLL")] = LoadImage("resources/sprites/Trollface.png", _ren);
 	_texmap[std::string("TROLLX")] = LoadImage("resources/sprites/TrollExtreme.jpg", _ren);
-
+	_texmap[std::string("SCORE")] = LoadImage("resources/sprites/score.png", _ren);
+	_texmap[std::string("HISCORE")] = LoadImage("resources/sprites/hi_score.png", _ren);
 }
 
 int	SpriteLib::start(StartConfig &config)
@@ -66,9 +72,7 @@ int	SpriteLib::start(StartConfig &config)
 		SDL_RenderClear(_ren);
 		UIElement		startButton(XRES / 2 - 150, YRES / 2 - 100, 300, 200);
 		UIElement		backdrop(0, 0 ,XRES, YRES);
-		UIElement		caption(XRES / 2 - 250, YRES / 4 - 100, 500, 200);
-		UIElement		trollpng(5 , 5, 200, 180);
-		int 			troll = 7;
+		UIElement		caption(XRES / 2 - 400, YRES / 4 - 100, 800, 200);
 		UIGroup			gr;
 		SDL_Event		event;
 		int				s = 0;
@@ -77,20 +81,18 @@ int	SpriteLib::start(StartConfig &config)
 		startButton.setColor(100,100, 100, 100);
 		ev.ren = _ren;
 		ev.start = 0;
+		ev.texmap = &_texmap;
 		startButton.setTexture(_texmap["PLAY"]);
 		backdrop.setTexture(_texmap["JUNGLE"]);
 		caption.setTexture(_texmap["CAPTION"]);
 		startButton.setMouseUp(&onStartMouseUp, ev);
 		startButton.setMouseDown(&onStartMouseDown, ev);
-		startButton.setMouseMove(&onStartMouseMove, troll);
 		backdrop.layer = 2;
 		startButton.layer = 1;
 		caption.layer = 1;
-		trollpng.layer = 1;
 		gr.add(backdrop);
 		gr.add(startButton);
 		gr.add(caption);
-		gr.add(trollpng);
 		while (!ev.start)
 		{
 			if (s)
@@ -98,19 +100,6 @@ int	SpriteLib::start(StartConfig &config)
 				s--;
 				if (!s)
 					ev.start = 1;
-			}
-			switch (troll)
-			{
-				case 7:
-					trollpng.visible = false;
-					break;
-				case 5:
-					trollpng.visible = true;
-					trollpng.setTexture(_texmap["TROLL"]);
-					break;
-				case 2:
-					trollpng.setTexture(_texmap["TROLLX"]);
-					break;
 			}
 			SDL_RenderClear(_ren);
 			gr.draw(_ren);
@@ -168,17 +157,22 @@ void 	SpriteLib::drawObjects(const std::vector<DrawableObj> &obj, GameData  &gam
 {
 	SDL_Color	col;
 	SDL_RenderClear(_ren);
-	std::string	score("    Score : "), hs ("Highscore : ");
+	std::string	score(""), hs ("");
 	int 		i;
 
 	col = createColor(122, 114, 95, 255);
 	score = score + std::to_string(gameData.scores[1]);
-	_score.setText(_ren, score.c_str() , nokia14, createColor(176, 196, 182, 255));
-	_score.draw(_ren);
+	_scoreN.setText(_ren, score.c_str() , nokia14, createColor(176, 196, 182, 255));
 	hs = hs + std::to_string(gameData.highScore);
-	_highScore.setText(_ren, hs.c_str() , nokia14, createColor(176, 196, 182, 255));
-	_highScore.draw(_ren);
+	_highScoreN.setText(_ren, hs.c_str() , nokia14, createColor(176, 196, 182, 255));
 	floor.draw(_ren);
+	sidebar.draw(_ren);
+	_score.draw(_ren);
+	_scoreN.draw(_ren);
+	_highScore.draw(_ren);
+	_highScoreN.draw(_ren);
+
+	//backdrop.draw(_ren);
 	for (auto it = obj.begin(), end = obj.end();  it != end ; it++)
 	{
 		i = it->y * _x + it->x;
@@ -316,17 +310,29 @@ void			SpriteLib::setSize(int x, int y)
 	_x = x;
 	_y = y;
 
-	_blockSize = YRES / ((_x > _y) ? _x : _y) ;
+	_blockSize = (YRES - 3) / ((_x > _y) ? _x : _y) ;
 	SDL_SetRenderDrawColor( _ren, 120, 120, 120, 255 );
-	_score = UIElement(x *_blockSize + 10, YRES - 50, (XRES - x *_blockSize) / 2, 25);
-	_score.setColor(120, 120, 120, 255 );
-	_highScore = UIElement(x *_blockSize + 10, YRES - 25, (XRES - x *_blockSize) / 2, 25);
-	_highScore.setColor(120, 120, 120, 255 );
+	_score = UIElement(x *_blockSize + 10, 50, (XRES - x *_blockSize) / 2, 25);
+	_score.setTexture(_texmap["SCORE"]);
+
+	_scoreN	= UIElement(x *_blockSize + (XRES - x *_blockSize) / 2 + 20 , 45, 50, 35);
+
+	_highScore = UIElement(x *_blockSize + 10, 80, (XRES - x *_blockSize) / 2, 25);
+	_highScore.setTexture(_texmap["HISCORE"]);
+
+	_highScoreN = UIElement(x *_blockSize + (XRES - x *_blockSize) / 2 + 20 , 78, 50, 35);
+
 	floor.move(5, 5);
 	floor.setTexture(_texmap["FLOOR"]);
 	floor.resize(_blockSize * _x, _blockSize * _y);
 	floor.active = true;
 	floor.visible = true;
+
+	sidebar.move(x *_blockSize + 10, 5);
+	sidebar.resize(XRES - _blockSize * _x + 5, _blockSize * _y) ;
+	sidebar.setTexture(_texmap["FLOOR"]);
+	sidebar.active = true;
+	sidebar.visible = true;
 
 	for (unsigned int i = 0; i < _y; i++ )
 	{
@@ -368,12 +374,14 @@ void			SpriteLib::end(int &end)
 	if (_ren && _window)
 	{
 		end = 0;
-		SDL_RenderClear(_ren);
-		UIElement	message;
+		UIElement	message(XRES / 2 - 300, YRES / 2 - 100, 600, 100);
+		message.setColor(120, 120, 120, 255 );
 		SDL_Event	event;
 
+		message.setText(_ren ,"Press Enter to restart, any other key to quit", nokia14, createColor(176, 196, 182, 255));
 		while (!end)
 		{
+			SDL_RenderClear(_ren);
 			while (SDL_PollEvent(&event))
 			{
 				message.checkEvent(event);
@@ -383,16 +391,21 @@ void			SpriteLib::end(int &end)
 				}
 				if  (event.type == SDL_KEYDOWN)
 				{
-					switch (event.key.keysym.sym)
+					switch (event.key.keysym.scancode)
 					{
-						case SDLK_y:
+						case SDL_SCANCODE_RETURN:
 							end = RESTART;
+							break;
 						default:
 							end = QUIT;
 					}
 				}
-				message.draw(_ren);
+				if  (event.type == SDL_QUIT)
+				{
+					end = QUIT;
+				}
 			}
+			message.draw(_ren);
 			SDL_RenderPresent(_ren);
 		}
 	}

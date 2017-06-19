@@ -19,6 +19,8 @@ public:
     std::vector<DrawableObj>    GetDrawableObjects();
     void                        SetMapWidth(int width);
     void                        SetMapHeight(int height);
+    int							GetMapWidth();
+	int							GetMapHeight();
 
 	int 						highScore;
 private:
@@ -30,7 +32,7 @@ private:
 	int					mapHeight;
 	int					foodCounter;
 	std::vector<Food*>	food;
-	int	 				updateTick;
+	Uint32	 			updateTick;
 	FoodFactory			factory;
 
 	void				spawnFood();

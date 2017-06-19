@@ -45,7 +45,7 @@ public:
 	UIElement();
 	UIElement(int _x, int _y, int w, int h);
 	UIElement(const UIElement &src);
-	~UIElement();
+	virtual ~UIElement();
 
 	UIElement	&operator=(const UIElement &src);
 	bool		checkEvent(const SDL_Event &e, bool exec = true);
