@@ -3,13 +3,7 @@
 //
 #pragma once
 
-#define F_ERR 0
-
 #include <libIncludes.hpp>
-
-
-#define SDL_SetRenderDrawColorRGB(R, C) SDL_SetRenderDrawColor(R, C.r, C.g, C.b, C.a)
-
 
 class SpriteLib : public IGUI
 {
@@ -21,9 +15,13 @@ private:
 	std::vector<UIElement*>				_blocks;
 	std::map<std::string, SDL_Texture*>	_texmap;
 	UIElement							_score;
+	UIElement							_scoreN;
 	UIElement							_highScore;
+	UIElement							_highScoreN;
 	TTF_Font							*nokia14;
 	UIElement							floor;
+	UIElement							sidebar;
+
 public:
 	SpriteLib();
 	~SpriteLib();

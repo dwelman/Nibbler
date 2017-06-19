@@ -5,7 +5,6 @@
 #include <fstream>
 #include <sstream>
 
-
 void	*getHandle(const char *lib)
 {
 	void 	*handle;
@@ -139,8 +138,6 @@ void	gameLoop(const std::string &startingLib, int x, int y)
                 }
             }
             GameManager::Instance().Update();
-        //    gameData.scores.emplace(std::make_pair(GameManager::Instance().GetSnake()->GetPlayerNumber(), GameManager::Instance().GetSnake()->GetScore()));
-        //    gameData.speeds.emplace(std::make_pair(GameManager::Instance().GetSnake()->GetPlayerNumber(), GameManager::Instance().GetSnake()->GetSpeed()));
         	gameData.scores[1] = GameManager::Instance().GetSnake()->GetScore();
 			gameData.speeds[1] = GameManager::Instance().GetSnake()->GetSpeed();
             hasMoved = false;
@@ -149,6 +146,7 @@ void	gameLoop(const std::string &startingLib, int x, int y)
         }
         else if (started)
 			guiLib->getInput(keys);
+
 		if (keys.libswitch > 0)
 			libSwitch(keys.libswitch, guiLib, &handle);
         if (keys.quit > 0)
@@ -157,8 +155,20 @@ void	gameLoop(const std::string &startingLib, int x, int y)
             isPaused = !isPaused;
 		if (GameManager::Instance().GetSnake()->IsDead())
 			guiLib->end(end);
-		if (end == 1)
+		if (end == 2)
+		{
+			int w, h, ss;
+
+			w = GameManager::Instance().GetMapWidth();
+			h = GameManager::Instance().GetMapHeight();
+			ss = 100 - sqrt(w * h) + (sqrt(w * h) / 1.5f);
+			GameManager::Instance().GiveSnake(Snake(1, w / 2, h / 2, SnakeSegment::NORTH, ss, ss / 5));
+			end = 0;
+		}
+		else if (end == 1)
+		{
 			is_running = false;
+		}
 	}
 	if (handle)
 		dlclose(handle);
@@ -212,7 +222,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        srand(time(NULL));
+		startingLib = "libBasicRender.dylib";
     }
     srand(time(NULL));
     int startingSpeed = 100 - sqrt(mapWidth * mapHeight) + (sqrt(mapWidth * mapHeight) / 1.5f);

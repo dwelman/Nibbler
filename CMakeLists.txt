@@ -43,6 +43,10 @@ add_executable(nibbler ${SOURCE_FILES} ${INCLUDE_FILES})
 
 target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
 
+add_custom_target(re make clean
+COMMAND make
+)
+
 set(CALLED_FROM_PARENT true)
 set(BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
