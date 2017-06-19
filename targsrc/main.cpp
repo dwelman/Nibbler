@@ -158,11 +158,19 @@ void	gameLoop(const std::string &startingLib, int x, int y)
 		if (end == 2)
 		{
 			int w, h, ss;
-
+            int score = GameManager::Instance().GetSnake()->GetScore();
+            if (GameManager::Instance().highScore < score)
+            {
+                GameManager::Instance().highScore = score;
+            }
+            std::ofstream   oFile("highscore");
+            oFile << score;
+            oFile.close();
 			w = GameManager::Instance().GetMapWidth();
 			h = GameManager::Instance().GetMapHeight();
 			ss = 100 - sqrt(w * h) + (sqrt(w * h) / 1.5f);
 			GameManager::Instance().GiveSnake(Snake(1, w / 2, h / 2, SnakeSegment::NORTH, ss, ss / 5));
+            gameData.highScore = GameManager::Instance().highScore;
 			end = 0;
 		}
 		else if (end == 1)
